@@ -10,14 +10,18 @@ Resp. : « dev » partout (un seul développeur). Diff. : F facile, M moyen, D d
 | T03 | Schéma Drizzle et base Neon (F02–F17) | dev | T01 | M | migrations et données de test chargées | ✅ |
 | T04 | Connexion admin (F13) | dev | T02, T03 | M | mauvais mot de passe refusé | 🟡 |
 
-Écart : T04, connexion et page `/admin` faites avant T02 ; restent la création du mot de passe réel et l'essai en ligne.
+Écart : T02, site créé sur https://ambasadaoro.netlify.app (envoi manuel) ; l'accès demande encore la connexion à l'équipe Netlify et les variables d'environnement ne sont pas saisies.
+Écart : T04, restent `ADMIN_EMAIL`, le mot de passe réel et l'essai en ligne.
 
 ## Sprint 2 — annonces et catalogue (jours 5 à 9)
 | ID | Tâche | Resp. | Dépend de | Diff. | Validation | État |
 |----|-------|------|-----------|-------|------------|------|
-| T05 | Admin annonces et photos (F14) | dev | T04 | M | annonce créée avec photos puis publiée | ⬜ |
-| T06 | Accueil et fiche (F01, F04) | dev | T05 | F | « à la une » et fiche complète sur mobile | ⬜ |
-| T07 | Catalogue, filtres, recherche, tri, statuts, vues (F02, F03, F05) | dev | T05 | M | filtres combinés et pagination testés | ⬜ |
+| T05 | Admin annonces et photos (F14) | dev | T04 | M | annonce créée avec photos puis publiée | 🟡 |
+| T06 | Accueil et fiche (F01, F04) | dev | T05 | F | « à la une » et fiche complète sur mobile | ✅ |
+| T07 | Catalogue, filtres, recherche, tri, statuts, vues (F02, F03, F05) | dev | T05 | M | filtres combinés et pagination testés | ✅ |
+
+Écart : T05, code fait et parcours créer / publier / retirer essayé sur une base locale ; l'envoi réel de photos reste à essayer (clés Cloudinary absentes).
+Écart : T06 et T07, vérifiés en local sur mobile (360 à 375 px) et par les tests ; à revérifier en ligne (T16).
 
 ## Sprint 3 — achat (jours 10 à 15, le plus risqué)
 | ID | Tâche | Resp. | Dépend de | Diff. | Validation | État |

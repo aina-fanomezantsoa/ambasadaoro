@@ -39,13 +39,22 @@ export default function Home({ searchParams }: { searchParams: Promise<Params> }
             Acheter un compte Clash of Clans
           </h1>
           <p className="mt-3 rounded-2xl border border-reserved/40 px-4 py-2 text-xs text-reserved">
-            Site en construction : les annonces affichées sont fictives et rien n&apos;est à vendre.
+            Site en construction : la commande en ligne n&apos;est pas encore ouverte.
           </p>
         </div>
       </div>
 
       <div className="mx-auto max-w-[1200px] px-4">
-        <Suspense fallback={<p className="mt-6 text-muted">Chargement des comptes…</p>}>
+        <Suspense
+          fallback={
+            <div role="status" className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              <span className="sr-only">Chargement des comptes…</span>
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="h-96 animate-pulse rounded-3xl bg-surface" />
+              ))}
+            </div>
+          }
+        >
           <Catalogue searchParams={searchParams} />
         </Suspense>
 

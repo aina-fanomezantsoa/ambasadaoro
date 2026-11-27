@@ -1,5 +1,9 @@
 import Link from "next/link";
 import { connection } from "next/server";
+import { Photo } from "@/components/photo";
+import { Status } from "@/components/status";
+import { db } from "@/db";
+import { publicListings } from "@/db/listings";
 import {
   catalogueHref,
   param,
@@ -9,7 +13,6 @@ import {
   type CatalogueListing,
   type Params,
 } from "@/lib/catalogue";
-import { demoListings } from "@/lib/demo-listings";
 import { HEROES } from "@/lib/rules";
 import { AutoSelect } from "./auto-select";
 import { ChevronDown, Image as PhotoIcon, Search, Shield } from "./icons";
@@ -66,19 +69,36 @@ function Pill({
   );
 }
 
-function Card({ listing }: { listing: CatalogueListing }) {
+type Listed = CatalogueListing & { id: string; cover: string | null };
+
+function Card({ listing }: { listing: Listed }) {
   const sold = listing.status === "sold";
   return (
     <li>
-      <article className="flex h-full flex-col rounded-3xl bg-surface p-5">
-        <p className="text-xs font-semibold tracking-wide text-muted uppercase">Android et iOS</p>
+      <article className="relative flex h-full flex-col rounded-3xl bg-surface p-5">
+        <p className="text-xs font-semibold tracking-wide text-muted uppercase">
+          Android et iOS{listing.featured && !sold && " · À la une"}
+        </p>
         <h2 className="mt-2 line-clamp-2 min-h-12 text-base leading-6 font-medium">
-          {listing.title}
+          {/* The pseudo-element makes the whole card clickable. */}
+          <Link href={`/annonces/${listing.id}`} className="after:absolute after:inset-0">
+            {listing.title}
+          </Link>
         </h2>
-        <div className="mt-3 flex aspect-[16/10] flex-col items-center justify-center gap-1 rounded-2xl bg-black text-xs text-muted">
-          <PhotoIcon className="size-6" />
-          Photo à venir
-        </div>
+        {listing.cover ? (
+          <Photo
+            publicId={listing.cover}
+            alt={listing.title}
+            width={640}
+            height={400}
+            className="mt-3 aspect-[16/10] w-full rounded-2xl bg-black object-cover"
+          />
+        ) : (
+          <div className="mt-3 flex aspect-[16/10] flex-col items-center justify-center gap-1 rounded-2xl bg-black text-xs text-muted">
+            <PhotoIcon className="size-6" />
+            Photo à venir
+          </div>
+        )}
         <ul className="mt-4 flex flex-wrap gap-2">
           <li className="flex h-6 items-center rounded-full bg-chip px-3 text-chip-text">
             HDV {listing.townHall}
@@ -99,9 +119,7 @@ function Card({ listing }: { listing: CatalogueListing }) {
           <p className={`text-2xl leading-6 font-bold ${sold ? "text-muted line-through" : ""}`}>
             {ariary.format(listing.priceAr)} Ar
           </p>
-          <span className={`text-sm font-medium ${sold ? "text-muted" : "text-available"}`}>
-            {sold ? "Vendu" : "Disponible"}
-          </span>
+          <Status status={listing.status} reserved={listing.reserved} />
         </div>
         <div className="mt-4 flex items-center gap-3 border-t border-dashed border-line pt-4">
           <span className="flex size-9 items-center justify-center rounded-full bg-chip">
@@ -121,7 +139,8 @@ export async function Catalogue({ searchParams }: { searchParams: Promise<Params
   const params = await searchParams;
   await connection(); // the "sold 7 days ago" rule needs the time of the request
   const now = new Date();
-  const { items, available, total, page, pages } = searchCatalogue(demoListings(now), params, now);
+  const listed = await publicListings(db(), now);
+  const { items, available, total, page, pages } = searchCatalogue(listed, params, now);
   const hall = param(params, "hdv");
 
   return (
@@ -212,7 +231,7 @@ export async function Catalogue({ searchParams }: { searchParams: Promise<Params
       ) : (
         <ul className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((listing) => (
-            <Card key={listing.title} listing={listing} />
+            <Card key={listing.id} listing={listing} />
           ))}
         </ul>
       )}

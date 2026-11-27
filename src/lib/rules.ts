@@ -1,12 +1,14 @@
-import { createHmac, randomBytes, randomInt, scryptSync, timingSafeEqual } from "node:crypto";
+import {
+  createHash,
+  createHmac,
+  randomBytes,
+  randomInt,
+  scryptSync,
+  timingSafeEqual,
+} from "node:crypto";
+import { HEROES, MAX_PHOTO_BYTES, MAX_PHOTOS, PHOTO_FORMATS } from "./limits.ts";
 
-export const HEROES = {
-  barbarianKing: "Roi des barbares",
-  archerQueen: "Reine des archers",
-  grandWarden: "Grand gardien",
-  royalChampion: "Championne royale",
-  minionPrince: "Prince gargouille",
-} as const; // BR-05
+export { HEROES, MAX_PHOTO_BYTES, MAX_PHOTOS, PHOTO_FORMATS };
 
 /** BR-13: returns 0XXXXXXXXX, or null when it is not a Malagasy mobile number. */
 export function normalizePhone(input: string): string | null {
@@ -49,4 +51,28 @@ export function isValidSession(cookie: string | undefined, key: string, now = Da
   const [expires, signature] = cookie?.split(".") ?? [];
   if (!signature || !(Number(expires) > now)) return false;
   return sameBytes(Buffer.from(signature), Buffer.from(sign(expires, key)));
+}
+
+/** BR-02: what still blocks publication, in French; empty when the listing can be published. */
+export function publishErrors(
+  listing: { title: string; priceAr: number; townHall: number },
+  photos: number,
+) {
+  return [
+    !listing.title.trim() && "un titre",
+    !listing.priceAr && "un prix",
+    !listing.townHall && "le niveau HDV",
+    !photos && "au moins 1 photo",
+  ].filter((missing) => missing !== false);
+}
+
+/** Cloudinary request signature: SHA-1 of the sorted parameters followed by the API secret. */
+export function cloudinarySignature(params: Record<string, string | number>, secret: string) {
+  const text = Object.keys(params)
+    .sort()
+    .map((key) => `${key}=${params[key]}`)
+    .join("&");
+  return createHash("sha1")
+    .update(text + secret)
+    .digest("hex");
 }

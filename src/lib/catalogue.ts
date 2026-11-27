@@ -11,6 +11,7 @@ export type CatalogueListing = {
   heroes: Record<string, number>;
   featured: boolean;
   status: "draft" | "published" | "sold" | "withdrawn";
+  reserved?: boolean; // BR-01: deduced from an active order
   soldAt: Date | null;
   views: number;
   createdAt: Date;
@@ -53,7 +54,7 @@ export const isPublic = (l: CatalogueListing, now: Date) =>
 
 /**
  * BR-41: filters combine; the default sort puts available accounts first.
- * shortcut: filters an in-memory list, move to a SQL query when listings come from the database.
+ * shortcut: filters in memory, fine for the 20 to 200 accounts on sale (decision 4); SQL beyond.
  */
 export function searchCatalogue<L extends CatalogueListing>(
   listings: L[],
@@ -83,7 +84,7 @@ export function searchCatalogue<L extends CatalogueListing>(
   );
 
   const sort = param(params, "tri");
-  const rank = (l: L) => (l.status === "sold" ? 0 : 2) + (l.featured ? 1 : 0);
+  const rank = (l: L) => (l.status === "sold" ? 0 : l.reserved ? 2 : 4) + (l.featured ? 1 : 0);
   const compare: Record<string, (a: L, b: L) => number> = {
     price_asc: (a, b) => a.priceAr - b.priceAr,
     price_desc: (a, b) => b.priceAr - a.priceAr,
@@ -100,7 +101,7 @@ export function searchCatalogue<L extends CatalogueListing>(
   const page = Math.min(num(params, "page") ?? 1, pages);
   return {
     items: found.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE),
-    available: found.filter((l) => l.status === "published").length,
+    available: found.filter((l) => l.status === "published" && !l.reserved).length,
     total: found.length,
     page,
     pages,
