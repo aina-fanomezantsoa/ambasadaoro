@@ -1,3 +1,7 @@
 [build]
   command = "npm run build"
   publish = ".next"
+
+# Sans cette ligne, un envoi manuel publie des fichiers statiques et tout répond 404.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
