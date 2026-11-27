@@ -10,7 +10,7 @@ Entrées validées avec Zod. Réponse : `{ ok: true, data }` ou `{ ok: false, er
 | `createReview` | public + code et téléphone | note, commentaire | non livrée, déjà noté |
 | `addView` | public | annonce | — |
 | `saveListing`, `publishListing`, `withdrawListing` | admin | champs d'annonce | champs manquants, non autorisé |
-| `signUpload`, `deletePhoto` | admin | annonce | 8 photos atteintes |
+| `signUpload`, `addPhoto`, `deletePhoto` | admin | annonce ou photo | 8 photos atteintes, photo trop lourde ou mauvais format, dernière photo d'une annonce publiée |
 | `acceptPayment`, `rejectPayment` | admin | paiement | déjà traité |
 | `markDelivered`, `cancelOrder` | admin | commande | statut incompatible |
 | `openDispute`, `closeDispute` | admin | commande, motif, issue | délai de 7 jours dépassé |

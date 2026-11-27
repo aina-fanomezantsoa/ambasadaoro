@@ -62,6 +62,16 @@ describe("catalogue", () => {
     expect(titles(all, { tri: "price_asc" })).toEqual(["sold", "featured", "plain"]);
   });
 
+  it("BR-41, F01: featured first, reserved after available and not counted", () => {
+    const all = [
+      listing("reserved", { reserved: true, featured: true }),
+      listing("plain"),
+      listing("sold", { status: "sold", soldAt: daysAgo(1) }),
+    ];
+    expect(titles(all)).toEqual(["plain", "reserved", "sold"]);
+    expect(searchCatalogue(all, {}, now).available).toBe(1);
+  });
+
   it("paginates and keeps filters in links", () => {
     const all = Array.from({ length: PAGE_SIZE + 1 }, (_, i) => listing(`n${i}`));
     expect(searchCatalogue(all, { page: "2" }, now).items).toHaveLength(1);
