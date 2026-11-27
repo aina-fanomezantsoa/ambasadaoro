@@ -1,3 +1,4 @@
+import { unstable_rethrow } from "next/navigation";
 import { z } from "zod";
 
 export type Result<T> = { ok: true; data: T } | { ok: false; error: string };
@@ -13,6 +14,7 @@ export function action<S extends z.ZodType, T>(schema: S, run: (input: z.output<
     try {
       return { ok: true, data: await run(parsed.data) };
     } catch (error) {
+      unstable_rethrow(error); // redirect() works by throwing
       if (error instanceof UserError) return { ok: false, error: error.message };
       console.error(error);
       return { ok: false, error: "Une erreur est survenue. Réessayez." };
