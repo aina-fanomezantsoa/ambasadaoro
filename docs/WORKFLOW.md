@@ -16,7 +16,6 @@ Créé le 2026-11-27. États : ⬜ à faire · 🟡 en cours · ✅ fait
 
 ## Questions ouvertes
 
-- Étape 2 : architecture rédigée, **stack à valider**.
 - Étape 4 faite. Comptes externes à créer par l'utilisateur (voir .env.example).
 - Points « à confirmer » listés dans ROADMAP.md.
 
