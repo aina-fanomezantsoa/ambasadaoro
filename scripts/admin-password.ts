@@ -13,5 +13,7 @@ input.question("", (password) => {
     process.exitCode = 1;
     return;
   }
-  console.log(`\nÀ mettre dans .env et sur Netlify : ADMIN_PASSWORD_HASH=${hashPassword(password)}`);
+  console.log(
+    `\nÀ mettre dans .env et sur Netlify : ADMIN_PASSWORD_HASH=${hashPassword(password)}`,
+  );
 });
