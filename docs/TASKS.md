@@ -6,7 +6,7 @@ Resp. : « dev » partout (un seul développeur). Diff. : F facile, M moyen, D d
 | ID | Tâche | Resp. | Dépend de | Diff. | Validation | État |
 |----|-------|------|-----------|-------|------------|------|
 | T01 | Projet Next.js, outillage, mise en page de base (tous les F) | dev | — | F | dev, lint, tests, build passent | ✅ |
-| T02 | Déploiement vide sur Netlify, CI (tous les F) | dev | T01 | M | page visible en ligne, CI verte | ⬜ |
+| T02 | Déploiement vide sur Netlify, CI (tous les F) | dev | T01 | M | page visible en ligne, CI verte | 🟡 |
 | T03 | Schéma Drizzle et base Neon (F02–F17) | dev | T01 | M | migrations et données de test chargées | ✅ |
 | T04 | Connexion admin (F13) | dev | T02, T03 | M | mauvais mot de passe refusé | 🟡 |
 
