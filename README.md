@@ -5,7 +5,7 @@ Boutique de comptes Clash of Clans (Next.js). Voir [AGENTS.md](AGENTS.md) et [do
 ```bash
 npm install
 cp .env.example .env   # puis remplir
-npm run admin:password # mot de passe admin, à reporter dans .env
+npm run admin:password # choisir le mot de passe admin, reporter le hachage dans .env
 npm run db:migrate
 npm run db:seed        # données de démonstration, base de test uniquement
 npm run dev
