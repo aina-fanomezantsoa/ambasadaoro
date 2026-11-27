@@ -66,13 +66,13 @@ export function publishErrors(
   ].filter((missing) => missing !== false);
 }
 
-/** Cloudinary request signature: SHA-1 of the sorted parameters followed by the API secret. */
+/** Cloudinary request signature: SHA-256 (accepted like SHA-1) of the sorted parameters followed by the API secret. */
 export function cloudinarySignature(params: Record<string, string | number>, secret: string) {
   const text = Object.keys(params)
     .sort()
     .map((key) => `${key}=${params[key]}`)
     .join("&");
-  return createHash("sha1")
+  return createHash("sha256")
     .update(text + secret)
     .digest("hex");
 }

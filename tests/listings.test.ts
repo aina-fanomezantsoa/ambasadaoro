@@ -85,6 +85,6 @@ describe("listings", () => {
   it("signs Cloudinary parameters in key order", () => {
     const signature = cloudinarySignature({ b: 2, a: 1 }, "secret");
     expect(signature).toBe(cloudinarySignature({ a: 1, b: 2 }, "secret"));
-    expect(signature).toMatch(/^[0-9a-f]{40}$/);
+    expect(signature).toMatch(/^[0-9a-f]{64}$/);
   });
 });
