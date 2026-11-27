@@ -11,14 +11,14 @@ Versions et quotas relevés par recherche web le 2026-11-27, à revérifier à l
 | Style | Tailwind CSS |
 | Base | PostgreSQL sur Neon (gratuit : 1 Go, 100 CU-heures par mois) |
 | ORM | Drizzle, migrations versionnées |
-| Admin | Better Auth, connexion Google limitée à `ADMIN_EMAIL` (aucun mot de passe à gérer) |
+| Admin | E-mail et mot de passe d'un seul compte, définis dans l'environnement (scrypt, cookie signé, essais limités) |
 | Photos | Cloudinary, envoi signé, compression automatique |
 | Preuve de paiement | ID de transaction en texte, contrainte unique en base |
 | E-mail | Resend, vers la seule adresse de l'admin |
 | Hébergement | Netlify gratuit (300 crédits par mois) |
 | Qualité | ESLint, Prettier, Vitest, GitHub Actions |
 
-Non vérifiés à ce jour : Resend, Better Auth, Drizzle, conditions commerciales de Netlify et coût en crédits d'un déploiement.
+Non vérifiés à ce jour : Resend, Drizzle, conditions commerciales de Netlify et coût en crédits d'un déploiement.
 
 ## Dossiers
 
@@ -42,7 +42,7 @@ src/lib/            règles métier, validation, auth
 
 ## Variables d'environnement
 
-`DATABASE_URL`, `BETTER_AUTH_SECRET`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `ADMIN_EMAIL`, `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`, `RESEND_API_KEY`, `NEXT_PUBLIC_WHATSAPP_NUMBER`, `MVOLA_NUMBER`, `ORANGE_MONEY_NUMBER`
+`DATABASE_URL`, `SESSION_SECRET`, `ADMIN_EMAIL`, `ADMIN_PASSWORD_HASH`, `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`, `RESEND_API_KEY`, `NEXT_PUBLIC_WHATSAPP_NUMBER`, `MVOLA_NUMBER`, `ORANGE_MONEY_NUMBER`
 
 ## Volontairement non fait
 

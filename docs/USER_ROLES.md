@@ -10,6 +10,6 @@
 | Gérer les litiges, masquer un avis | non | oui |
 | Voir noms, téléphones, statistiques | non | oui |
 
-- Un seul admin : le compte Google dont l'e-mail vérifié est `ADMIN_EMAIL`. Tout autre compte est refusé.
-- Aucun compte acheteur, aucune inscription. Changer d'admin = changer la variable d'environnement.
+- Un seul admin : l'e-mail `ADMIN_EMAIL` et le mot de passe dont le hachage est `ADMIN_PASSWORD_HASH`. Tout autre essai est refusé.
+- Aucun compte acheteur, aucune inscription. Changer d'admin ou de mot de passe = changer les variables d'environnement (`npm run admin:password`) ; les sessions ouvertes sont alors fermées.
 - L'admin ne peut pas supprimer une commande ni modifier le texte d'un avis.

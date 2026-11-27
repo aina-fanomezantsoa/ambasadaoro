@@ -1,7 +1,16 @@
 import { describe, expect, it } from "vitest";
 import { z } from "zod";
 import { action, UserError } from "../src/lib/action";
-import { isAdminUser, normalizePhone, normalizeTxId, orderCode } from "../src/lib/rules";
+import {
+  createSession,
+  hashPassword,
+  isValidSession,
+  normalizePhone,
+  normalizeTxId,
+  orderCode,
+  SESSION_SECONDS,
+  verifyPassword,
+} from "../src/lib/rules";
 
 describe("rules", () => {
   it("BR-13: accepts Malagasy mobiles only", () => {
@@ -21,12 +30,20 @@ describe("rules", () => {
     for (const code of codes) expect(code).toMatch(/^[A-HJ-NP-Z2-9]{10}$/);
   });
 
-  it("F13: only the verified admin e-mail passes", () => {
-    const admin = "admin@example.com";
-    expect(isAdminUser({ email: "Admin@example.com", emailVerified: true }, admin)).toBe(true);
-    expect(isAdminUser({ email: admin, emailVerified: false }, admin)).toBe(false);
-    expect(isAdminUser({ email: "x@example.com", emailVerified: true }, admin)).toBe(false);
-    expect(isAdminUser(undefined, admin)).toBe(false);
+  it("F13: only the right password matches its hash", () => {
+    const stored = hashPassword("correct horse");
+    expect(verifyPassword("correct horse", stored)).toBe(true);
+    expect(verifyPassword("wrong", stored)).toBe(false);
+    expect(verifyPassword("correct horse", "")).toBe(false);
+  });
+
+  it("F13: a session expires and cannot be forged", () => {
+    const cookie = createSession("key", 0);
+    expect(isValidSession(cookie, "key", 1)).toBe(true);
+    expect(isValidSession(cookie, "other key", 1)).toBe(false);
+    expect(isValidSession(cookie, "key", SESSION_SECONDS * 1000)).toBe(false);
+    expect(isValidSession(`9${cookie}`, "key", 1)).toBe(false);
+    expect(isValidSession(undefined, "key", 1)).toBe(false);
   });
 
   it("action: validates, and hides unexpected errors", async () => {

@@ -13,7 +13,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 Boutique de comptes Clash of Clans, un seul vendeur-admin, public à Madagascar. Interface et docs en français, code en anglais.
 
 ## Stack
-Next.js 16 (App Router), TypeScript strict, Tailwind 4, Drizzle + PostgreSQL (Neon), Better Auth (Google, sans base), Zod, Vitest, Netlify.
+Next.js 16 (App Router), TypeScript strict, Tailwind 4, Drizzle + PostgreSQL (Neon), connexion admin maison (mot de passe), Zod, Vitest, Netlify.
 `cacheComponents` et `partialPrefetching` sont activés (next.config.ts) : toute lecture dynamique va sous `<Suspense>` ou `use cache`.
 
 ## Commandes

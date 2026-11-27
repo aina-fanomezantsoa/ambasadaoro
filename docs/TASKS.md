@@ -7,11 +7,10 @@ Resp. : « dev » partout (un seul développeur). Diff. : F facile, M moyen, D d
 |----|-------|------|-----------|-------|------------|------|
 | T01 | Projet Next.js, outillage, mise en page de base (tous les F) | dev | — | F | dev, lint, tests, build passent | ✅ |
 | T02 | Déploiement vide sur Netlify, CI (tous les F) | dev | T01 | M | page visible en ligne, CI verte | ⬜ |
-| T03 | Schéma Drizzle et base Neon (F02–F17) | dev | T01 | M | migrations et données de test chargées | 🟡 |
-| T04 | Connexion admin (F13) | dev | T02, T03 | M | autre compte Google refusé | ⬜ |
+| T03 | Schéma Drizzle et base Neon (F02–F17) | dev | T01 | M | migrations et données de test chargées | ✅ |
+| T04 | Connexion admin (F13) | dev | T02, T03 | M | mauvais mot de passe refusé | 🟡 |
 
-Écart : T03, schéma, migration et tests de contraintes faits (Postgres en mémoire) ; base Neon à créer, puis `db:migrate` et `db:seed` (non exécutés).
-Écart : T04, la configuration Better Auth et `requireAdmin` sont déjà posés ; restent la page de connexion et l'essai réel.
+Écart : T04, connexion et page `/admin` faites avant T02 ; restent la création du mot de passe réel et l'essai en ligne.
 
 ## Sprint 2 — annonces et catalogue (jours 5 à 9)
 | ID | Tâche | Resp. | Dépend de | Diff. | Validation | État |

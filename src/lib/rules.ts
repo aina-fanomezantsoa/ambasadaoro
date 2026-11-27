@@ -1,4 +1,4 @@
-import { randomInt } from "node:crypto";
+import { createHmac, randomBytes, randomInt, scryptSync, timingSafeEqual } from "node:crypto";
 
 export const HEROES = {
   barbarianKing: "Roi des barbares",
@@ -24,7 +24,29 @@ const CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 export const orderCode = () =>
   Array.from({ length: 10 }, () => CODE_ALPHABET[randomInt(CODE_ALPHABET.length)]).join("");
 
-export const isAdminUser = (
-  user: { email: string; emailVerified: boolean } | undefined,
-  adminEmail: string,
-) => !!user?.emailVerified && user.email.toLowerCase() === adminEmail.toLowerCase();
+const sameBytes = (a: Buffer, b: Buffer) => a.length === b.length && timingSafeEqual(a, b);
+
+/** F13: "salt:hash" in hex; no "$", which .env files would expand. */
+export function hashPassword(password: string, salt = randomBytes(16).toString("hex")) {
+  return `${salt}:${scryptSync(password, salt, 32).toString("hex")}`;
+}
+
+export const verifyPassword = (password: string, stored: string) =>
+  sameBytes(Buffer.from(hashPassword(password, stored.split(":")[0])), Buffer.from(stored));
+
+export const SESSION_SECONDS = 7 * 86_400;
+
+const sign = (value: string, key: string) =>
+  createHmac("sha256", key).update(value).digest("base64url");
+
+/** The admin session cookie: its expiry time and a signature of it. */
+export function createSession(key: string, now = Date.now()) {
+  const expires = String(now + SESSION_SECONDS * 1000);
+  return `${expires}.${sign(expires, key)}`;
+}
+
+export function isValidSession(cookie: string | undefined, key: string, now = Date.now()) {
+  const [expires, signature] = cookie?.split(".") ?? [];
+  if (!signature || !(Number(expires) > now)) return false;
+  return sameBytes(Buffer.from(signature), Buffer.from(sign(expires, key)));
+}

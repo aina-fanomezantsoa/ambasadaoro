@@ -19,7 +19,7 @@
 | F13 | chaque action admin refusée sans session admin |
 
 ## Manuels
-- Permissions : pages `/admin` sans connexion et avec un autre compte Google.
+- Permissions : pages `/admin` sans connexion et avec un mauvais mot de passe.
 - Téléphone réel sur réseau mobile : catalogue, filtres, commande, paiement.
 - Photos : trop lourde, mauvais format, 9e photo.
 - Corrections : annuler une commande, refuser un ID, retirer une annonce.

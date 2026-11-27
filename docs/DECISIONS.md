@@ -68,4 +68,12 @@ Statut : ✅ validé · 🟡 provisoire · ❓ ouvert
 | 35 | Comptes vendus | Visibles 7 jours | ✅ |
 | 36 | Héros | Liste fixe dans le code, niveau vide = non débloqué | ✅ |
 | 29 | Base et ORM | Neon + Drizzle ; Supabase et Prisma écartés pour rester léger | 🟡 |
-| 30 | Auth, photos, e-mail | Better Auth (Google), Cloudinary, Resend ; mot de passe maison écarté | 🟡 |
+| 30 | Photos, e-mail | Cloudinary, Resend | 🟡 |
+| 39 | Connexion admin | E-mail et mot de passe (un seul compte, haché dans l'environnement, 5 essais par 15 min, session de 7 jours) ; remplace Google et Better Auth (2026-11-28) | ✅ |
+
+## Série 7 — design (2026-11-27)
+
+| # | Sujet | Décision | Statut |
+|---|-------|----------|--------|
+| 37 | Référence visuelle | Mise en page inspirée de la page comptes de u7buy.com, sans leur marque ni leurs contenus | ✅ |
+| 38 | Accent | Orange à la place de l’or (remplace la couleur de 17) | 🟡 |

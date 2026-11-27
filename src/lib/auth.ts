@@ -1,26 +1,36 @@
 import "server-only";
-import { betterAuth } from "better-auth";
-import { nextCookies } from "better-auth/next-js";
-import { headers } from "next/headers";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { env } from "./env";
-import { isAdminUser } from "./rules";
+import { createSession, isValidSession, SESSION_SECONDS } from "./rules";
 
-// No database: the session lives in a signed cookie, and only one person ever logs in.
-const create = () =>
-  betterAuth({
-    secret: env("BETTER_AUTH_SECRET"),
-    socialProviders: {
-      google: { clientId: env("GOOGLE_CLIENT_ID"), clientSecret: env("GOOGLE_CLIENT_SECRET") },
-    },
-    plugins: [nextCookies()],
+const COOKIE = "admin_session";
+
+// The password hash is part of the key, so changing the password ends every session.
+function sessionKey() {
+  const secret = env("SESSION_SECRET");
+  if (secret.length < 32) throw new Error("SESSION_SECRET : 32 caractères au moins");
+  return secret + env("ADMIN_PASSWORD_HASH");
+}
+
+export async function startSession() {
+  (await cookies()).set(COOKIE, createSession(sessionKey()), {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: SESSION_SECONDS,
   });
+}
 
-let instance: ReturnType<typeof create> | undefined;
-export const auth = () => (instance ??= create());
+export async function endSession() {
+  (await cookies()).delete(COOKIE);
+}
 
 /** Call first in every admin page and action. */
 export async function requireAdmin() {
-  const session = await auth().api.getSession({ headers: await headers() });
-  if (!isAdminUser(session?.user, env("ADMIN_EMAIL"))) throw new Error("Accès refusé");
-  return session!.user;
+  await connection(); // the session expiry needs the time of the request
+  const cookie = (await cookies()).get(COOKIE)?.value;
+  if (!isValidSession(cookie, sessionKey())) redirect("/admin/connexion");
 }
