@@ -17,18 +17,20 @@ Arial, 14 px. Espacements par multiples de 4 px. Rayons : cartes 24 px, champs e
 ## Page catalogue (accueil et liste)
 De haut en bas :
 1. En-tête fixe : « Ambasadaoro », « Comment acheter », « Questions fréquentes », WhatsApp ; dessous, onglet « Comptes ». « Règles et garantie » et, dans la barre d’onglets (visible sur mobile), « Ma commande ». « Favoris » dans la barre d’onglets.
-2. Fil d'Ariane et titre « Acheter un compte Clash of Clans ».
-3. Deux filtres en pilules, appliqués dès le choix : HDV, et « Héros » qui déplie les cinq héros. Derrière le titre et les filtres, l'image de fond choisie dans l'admin, assombrie.
-4. Champ de recherche et raccourcis HDV (HDV 17, 16, 15…) défilant horizontalement.
-5. Nombre de comptes disponibles, pastille « Garantie 7 jours » et menu de tri.
-6. Grille de cartes : 1 colonne sur mobile, 2 sur tablette, 3 sur ordinateur.
-7. Sous la grille : « Comment acheter » et questions fréquentes (textes originaux).
-8. Bouton d’aide flottant WhatsApp, affiché si `NEXT_PUBLIC_WHATSAPP_NUMBER` est rempli.
+2. Fil d'Ariane et titre (par défaut « Acheter un compte Clash of Clans ») et paragraphe « bio », tous deux modifiables dans l'admin.
+3. Champ de recherche, puis à côté deux filtres en pilules, appliqués dès le choix : HDV, et « Héros » qui déplie les cinq héros. Derrière le titre et les filtres, l'image de fond choisie dans l'admin, assombrie.
+4. Nombre de comptes disponibles, pastille « Garantie 7 jours » et menu de tri.
+5. Grille de cartes : 1 colonne sur mobile, 2 sur tablette, 3 sur ordinateur.
+6. Sous la grille : « Comment acheter » et questions fréquentes (textes originaux).
+7. Bouton d’aide flottant WhatsApp, affiché si `NEXT_PUBLIC_WHATSAPP_NUMBER` est rempli.
 
 Les annonces « à la une » ouvrent la grille de l'accueil (F01).
 
 ## Carte d'annonce
 « Android et iOS » · titre sur 2 lignes · photo 16:10 (nombre de photos à ajouter avec les photos) · pastilles (HDV, niveaux des héros) · prix en Ar et statut · séparateur pointillé · vendeur et « Garantie 7 jours ».
+
+## Administration
+Pas de navigation publique : en-tête « Ambasadaoro » et bouton « Voir le site » (nouvel onglet). Menu : Nouvelle annonce, Accueil (titre, bio, image), Avis, Statistiques, Se déconnecter.
 
 ## Fiche compte
 Une grande photo, les autres en vignettes dessous (toucher une vignette l'affiche en grand). Puis prix, statut, toutes les caractéristiques et le bouton principal « Contacter sur WhatsApp » (compte disponible seulement).
