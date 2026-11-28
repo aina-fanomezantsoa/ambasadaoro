@@ -14,7 +14,7 @@ Créé le 2026-11-27. États : ⬜ à faire · 🟡 en cours · ✅ fait
 | 8 | Déploiement | Production en ligne | Prod vérifiée | ⬜ |
 | 9 | Maintenance | OPERATIONS.md, sauvegardes | Runbook remis | ⬜ |
 
-Sprint 3 codé (T08 à T12) ; reste le sprint 4.
+Sprint 4 codé (T13 à T15) ; reste T16, la recette sur le site déployé.
 
 ## Questions ouvertes
 
