@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import type { Params } from "@/lib/catalogue";
 import { Catalogue } from "./catalogue";
 import { HeroImage } from "./hero-image";
-import { ChevronRight } from "./icons";
+import { ChevronRight } from "../icons";
 import { Reviews } from "./reviews";
 
 const STEPS = [

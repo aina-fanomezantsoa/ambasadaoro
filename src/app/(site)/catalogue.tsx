@@ -6,7 +6,7 @@ import { publicListings } from "@/db/listings";
 import { catalogueHref, param, searchCatalogue, SORTS, type Params } from "@/lib/catalogue";
 import { HEROES } from "@/lib/rules";
 import { AutoSelect } from "./auto-select";
-import { ChevronDown, Search, Shield } from "./icons";
+import { ChevronDown, Search, Shield } from "../icons";
 
 const TOWN_HALLS = Array.from({ length: 10 }, (_, i) => String(17 - i));
 type Option = readonly [value: string, text: string];
