@@ -20,12 +20,10 @@ const SECTIONS = [
     ],
   ],
   [
-    "Commande et paiement",
+    "Achat et paiement",
     [
-      "La commande réserve le compte pendant 1 heure. Une seule commande en cours par numéro.",
-      "Payez par MVola ou Orange Money, puis saisissez l'ID de la transaction. Sans ID après 1 heure, la commande expire.",
-      "Nous vérifions chaque paiement à la main. Après un premier refus, vous avez 1 heure pour réessayer ; au second refus, la commande est annulée.",
-      "Un ID de transaction ne sert qu'une fois.",
+      "Contactez-nous sur WhatsApp depuis la fiche du compte.",
+      "Le paiement se fait par MVola ou Orange Money. Nous le vérifions à la main.",
       "Le compte est remis à la main, par WhatsApp ou par appel. Aucun identifiant de jeu n'est enregistré sur ce site.",
     ],
   ],
@@ -33,7 +31,7 @@ const SECTIONS = [
     "Vous et vos données",
     [
       "Vous devez avoir 18 ans, ou l'accord d'un parent.",
-      "Seuls votre nom et votre numéro sont enregistrés, pour traiter la commande.",
+      "Le site ne vous demande aucune donnée personnelle pour acheter : l'échange se fait sur WhatsApp.",
       "Ambasadaoro n'est ni affilié à Supercell ni approuvé par Supercell.",
     ],
   ],
