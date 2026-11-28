@@ -9,10 +9,12 @@ Créé le 2026-11-27. États : ⬜ à faire · 🟡 en cours · ✅ fait
 | 3 | Conception | BUSINESS_RULES, USER_ROLES, DATABASE_SCHEMA, UI_UX, TASKS, ROADMAP, TEST_PLAN | Plan de sprints validé | ✅ |
 | 4 | Setup | Projet initialisé, AGENTS.md, agents | dev + lint + tests OK | ✅ |
 | 5 | GitHub | Dépôt, CI, protections | CI verte | ✅ |
-| 6 | Dev | Fonctionnalités (une branche + PR par tâche) | Sprint fini | ⬜ |
+| 6 | Dev | Fonctionnalités (une branche + PR par tâche) | Sprint fini | 🟡 |
 | 7 | QA | Tests, sécurité, perf, a11y | Critère de livraison | ⬜ |
 | 8 | Déploiement | Production en ligne | Prod vérifiée | ⬜ |
 | 9 | Maintenance | OPERATIONS.md, sauvegardes | Runbook remis | ⬜ |
+
+Sprint 3 codé (T08 à T12) ; reste le sprint 4.
 
 ## Questions ouvertes
 
