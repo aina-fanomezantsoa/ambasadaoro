@@ -9,3 +9,19 @@ export const HEROES = {
   royalChampion: "Championne royale",
   minionPrince: "Prince gargouille",
 } as const; // BR-05
+
+export const ORDER_STATUS = {
+  awaiting_payment: "En attente de paiement",
+  to_verify: "Paiement à vérifier",
+  paid: "Payée",
+  delivered: "Livrée",
+  cancelled: "Annulée",
+  expired: "Expirée",
+} as const;
+export const OPERATORS = { mvola: "MVola", orange: "Orange Money" } as const;
+export const DISPUTE_STATUS = {
+  open: "Litige ouvert",
+  refunded: "Remboursé",
+  exchanged: "Échangé",
+  rejected: "Litige rejeté",
+} as const; // BR-32

@@ -11,6 +11,7 @@ import { publicListing } from "@/db/listings";
 import { HEROES } from "@/lib/limits";
 import { Shield } from "../../icons";
 import { CountView } from "./count-view";
+import { OrderForm } from "./order-form";
 
 export const metadata: Metadata = { title: "Compte à vendre" };
 
@@ -73,11 +74,23 @@ async function Listing({ params }: { params: Promise<{ id: string }> }) {
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-3xl bg-surface p-5">
         <p className="text-2xl font-bold">{number.format(listing.priceAr)} Ar</p>
         <Status status={listing.status} reserved={listing.reserved} />
-        <p className="flex w-full items-center gap-2 text-muted">
+        <Link
+          href="/regles"
+          className="flex min-h-11 w-full items-center gap-2 text-muted underline"
+        >
           <Shield className="size-5 text-accent" />
-          Garantie 7 jours · la commande en ligne arrive bientôt.
-        </p>
+          Garantie 7 jours · règles et risques
+        </Link>
       </div>
+
+      {listing.status === "published" &&
+        (listing.reserved ? (
+          <p className="mt-4 rounded-3xl bg-surface p-5 text-reserved">
+            Un acheteur a réservé ce compte. S&apos;il ne paie pas, le compte revient en vente.
+          </p>
+        ) : (
+          <OrderForm listingId={listing.id} title={listing.title} />
+        ))}
 
       <dl className="mt-4 grid gap-x-6 rounded-3xl bg-surface p-5 sm:grid-cols-2">
         {details.map(([label, value]) => (

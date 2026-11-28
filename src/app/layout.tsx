@@ -30,6 +30,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             >
               <Link href="/#comment-acheter">Comment acheter</Link>
               <Link href="/#faq">Questions fréquentes</Link>
+              <Link href="/regles">Règles et garantie</Link>
             </nav>
             {whatsappHref && (
               <a
@@ -47,12 +48,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                 <Shield className="size-6 text-muted" />
                 Clash of Clans
               </span>
-              <span
-                aria-current="page"
+              <Link
+                href="/"
                 className="flex h-full items-center border-b-2 border-accent px-2 font-medium md:mx-auto"
               >
                 Comptes
-              </span>
+              </Link>
+              <Link
+                href="/suivi"
+                className="ml-auto flex min-h-11 items-center font-medium md:ml-0"
+              >
+                Ma commande
+              </Link>
             </div>
           </div>
         </header>
@@ -61,6 +68,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
 
         <footer className="mt-16 border-t border-white/5 p-6 text-center text-xs text-muted">
           Ambasadaoro n&apos;est ni affilié à Supercell ni approuvé par Supercell.
+          <Link href="/regles" className="mx-auto flex min-h-11 w-fit items-center underline">
+            Règles, risques et garantie
+          </Link>
         </footer>
 
         {whatsappHref && (

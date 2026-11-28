@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { Status } from "@/components/status";
 import { db } from "@/db";
+import { countToVerify } from "@/db/orders";
 import { listings } from "@/db/schema";
 import { requireAdmin } from "@/lib/auth";
 import { logout } from "./actions";
@@ -15,6 +16,8 @@ async function Dashboard() {
   // shortcut: every listing on one page; paginate past a few hundred.
   const rows = await db().select().from(listings).orderBy(desc(listings.createdAt));
 
+  const toVerify = await countToVerify(db());
+
   return (
     <>
       <div className="mt-4 flex flex-wrap gap-3">
@@ -23,6 +26,12 @@ async function Dashboard() {
           className="flex h-11 items-center rounded-3xl bg-accent px-5 font-medium text-on-accent"
         >
           Nouvelle annonce
+        </Link>
+        <Link
+          href="/admin/commandes"
+          className="flex h-11 items-center rounded-3xl bg-surface px-5 font-medium"
+        >
+          Commandes{toVerify > 0 && ` (${toVerify} à vérifier)`}
         </Link>
         <form action={logout}>
           <button className="h-11 rounded-3xl bg-surface px-5 font-medium">Se déconnecter</button>

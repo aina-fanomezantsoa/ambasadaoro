@@ -76,3 +76,13 @@ export function cloudinarySignature(params: Record<string, string | number>, sec
     .update(text + secret)
     .digest("hex");
 }
+
+/** BR-15, BR-18: how long a buyer has to send a transaction ID. */
+export const HOLD_MS = 60 * 60_000;
+
+/** BR-17: shape of an already normalized ID (MVola digits, Orange Money dotted codes). */
+export const isTxId = (txId: string) => /^[A-Z0-9._-]{5,40}$/.test(txId);
+
+/** BR-32: a dispute opens within 7 days of delivery. */
+export const canOpenDispute = (deliveredAt: Date, now: Date) =>
+  now.getTime() - deliveredAt.getTime() <= 7 * 86_400_000;

@@ -1,4 +1,4 @@
-import { sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import type { PgDatabase, PgQueryResultHKT } from "drizzle-orm/pg-core";
 import { rateLimits } from "./schema.ts";
 
@@ -23,3 +23,13 @@ export async function allowAttempt(
     .returning({ count: rateLimits.count });
   return row.count <= max;
 }
+
+/** Gives back an attempt that turned out legitimate, so only failures add up. */
+export const forgiveAttempt = (
+  database: PgDatabase<PgQueryResultHKT, Record<string, unknown>>,
+  key: string,
+) =>
+  database
+    .update(rateLimits)
+    .set({ count: sql`greatest(${rateLimits.count} - 1, 0)` })
+    .where(eq(rateLimits.key, key));
