@@ -38,9 +38,6 @@ export default function Home({ searchParams }: { searchParams: Promise<Params> }
           <h1 className="mt-3 text-lg font-semibold lg:mb-4 lg:text-[32px] lg:leading-10 lg:font-bold">
             Acheter un compte Clash of Clans
           </h1>
-          <p className="mt-3 rounded-2xl border border-reserved/40 px-4 py-2 text-xs text-reserved">
-            Site en construction : la commande en ligne n&apos;est pas encore ouverte.
-          </p>
         </div>
       </div>
 

@@ -9,15 +9,23 @@ export function ActionButton({
   id,
   label,
   className = "bg-surface",
+  confirm,
 }: {
   action: (state: unknown, form: FormData) => Promise<Result<string>>;
   id: string;
   label: string;
   className?: string;
+  /** Asked before a step that is hard to undo. */
+  confirm?: string;
 }) {
   const [state, formAction, pending] = useActionState(action, null);
   return (
-    <form action={formAction}>
+    <form
+      action={formAction}
+      onSubmit={(event) => {
+        if (confirm && !window.confirm(confirm)) event.preventDefault();
+      }}
+    >
       <input type="hidden" name="id" value={id} />
       <button
         disabled={pending}

@@ -1,21 +1,19 @@
 "use server";
 
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { db } from "@/db";
 import { allowAttempt } from "@/db/rate-limit";
 import { action, UserError } from "@/lib/action";
 import { endSession, startSession } from "@/lib/auth";
+import { clientIp } from "@/lib/client-ip";
 import { env } from "@/lib/env";
 import { verifyPassword } from "@/lib/rules";
 
 const signIn = action(
   z.object({ email: z.string().trim().max(200), password: z.string().min(1).max(200) }),
   async ({ email, password }) => {
-    // Set by Netlify itself, so a visitor cannot fake it; elsewhere everyone shares one counter.
-    const ip = (await headers()).get("x-nf-client-connection-ip") ?? "unknown";
-    if (!(await allowAttempt(db(), `login:${ip}`, 5, 15))) {
+    if (!(await allowAttempt(db(), `login:${await clientIp()}`, 5, 15))) {
       throw new UserError("Trop d'essais. Réessayez dans 15 minutes.");
     }
     const passwordOk = verifyPassword(password, env("ADMIN_PASSWORD_HASH"));
