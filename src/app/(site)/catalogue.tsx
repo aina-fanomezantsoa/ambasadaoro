@@ -6,7 +6,7 @@ import { publicListings } from "@/db/listings";
 import { catalogueHref, param, searchCatalogue, SORTS, type Params } from "@/lib/catalogue";
 import { HEROES } from "@/lib/rules";
 import { AutoSelect } from "./auto-select";
-import { ChevronDown, Search, Shield } from "./icons";
+import { ChevronDown, Search, Shield } from "../icons";
 
 const TOWN_HALLS = Array.from({ length: 10 }, (_, i) => String(17 - i));
 type Option = readonly [value: string, text: string];
@@ -62,6 +62,17 @@ export async function Catalogue({ searchParams }: { searchParams: Promise<Params
       {/* The key resets the fields when a link changes the URL. */}
       <form action="/" key={catalogueHref(params, {})} className="mt-4">
         <div className="flex flex-wrap items-start gap-2">
+          <label className="flex h-11 w-full items-center gap-3 rounded-[60px] border border-white/15 bg-field px-5 sm:w-72">
+            <Search className="size-4 shrink-0 text-muted" />
+            <span className="sr-only">Rechercher un compte</span>
+            <input
+              type="search"
+              name="q"
+              defaultValue={param(params, "q")}
+              placeholder="Rechercher"
+              className="min-w-0 flex-1 bg-transparent outline-none placeholder:text-muted"
+            />
+          </label>
           <Pill name="hdv" label="Niveau HDV" options={HALL_OPTIONS} value={hall} />
           <details className="relative">
             <summary
@@ -84,37 +95,6 @@ export async function Catalogue({ searchParams }: { searchParams: Promise<Params
               ))}
             </div>
           </details>
-        </div>
-
-        <div className="mt-4 flex flex-col gap-3 lg:flex-row lg:items-center">
-          <label className="flex h-[42px] items-center gap-3 rounded-[60px] border border-white/15 bg-field px-5 lg:w-72">
-            <Search className="size-4 shrink-0 text-muted" />
-            <span className="sr-only">Rechercher un compte</span>
-            <input
-              type="search"
-              name="q"
-              defaultValue={param(params, "q")}
-              placeholder="Rechercher"
-              className="min-w-0 flex-1 bg-transparent outline-none placeholder:text-muted"
-            />
-          </label>
-          <nav
-            aria-label="Raccourcis par HDV"
-            className="flex min-w-0 flex-1 gap-2 overflow-x-auto"
-          >
-            {TOWN_HALLS.map((h) => (
-              <Link
-                key={h}
-                href={catalogueHref(params, { hdv: hall === h ? "" : h })}
-                aria-current={hall === h ? "true" : undefined}
-                className="group flex min-h-11 shrink-0 items-center"
-              >
-                <span className="flex h-6 items-center rounded-full bg-chip px-3 text-chip-text group-aria-[current]:bg-accent group-aria-[current]:text-on-accent">
-                  HDV {h}
-                </span>
-              </Link>
-            ))}
-          </nav>
         </div>
 
         <div className="mt-6 flex flex-wrap items-center justify-between gap-3">

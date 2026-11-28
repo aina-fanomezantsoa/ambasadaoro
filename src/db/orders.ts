@@ -1,4 +1,4 @@
-import { and, count, desc, eq, inArray, lte, sql } from "drizzle-orm";
+import { and, desc, eq, inArray, lte, sql } from "drizzle-orm";
 import type { PgDatabase, PgQueryResultHKT } from "drizzle-orm/pg-core";
 import { UserError } from "../lib/action.ts";
 import { canOpenDispute, HOLD_MS, isTxId, normalizeTxId, orderCode } from "../lib/rules.ts";
@@ -253,12 +253,4 @@ export async function deliveredOrders(database: Database) {
     .leftJoin(disputes, eq(disputes.orderId, orders.id))
     .where(eq(orders.status, "delivered"));
   return rows.map((row) => ({ ...row, deliveredAt: row.deliveredAt! })); // set by BR-20
-}
-
-export async function countToVerify(database: Database) {
-  const [row] = await database
-    .select({ n: count() })
-    .from(orders)
-    .where(eq(orders.status, "to_verify"));
-  return row.n;
 }

@@ -53,5 +53,6 @@ Resp. : « dev » partout (un seul développeur). Diff. : F facile, M moyen, D d
 | T17 | Deux filtres : HDV et héros (F02) | dev | T07 | F | filtres combinés testés | ✅ |
 | T18 | Fiche à vignettes, contact WhatsApp, plus de formulaire (F04, F10) | dev | T13 | F | brouillon avec détail et prix | 🟡 |
 | T19 | Image d'accueil, ventes à la main, liste admin (F14, F18) | dev | T05 | M | image envoyée et compte marqué vendu | 🟡 |
+| T20 | Titre et bio d'accueil, admin sans navigation publique, recherche et filtres côte à côte (F02, F19) | dev | T19 | F | titre et bio visibles sur l'accueil | 🟡 |
 
 Écart : T17 à T19, lint, types et tests passent ; rendu visuel, envoi d'image et « Marquer vendu » restent à essayer à la main.

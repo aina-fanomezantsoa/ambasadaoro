@@ -5,7 +5,6 @@ import { Photo } from "@/components/photo";
 import { Status } from "@/components/status";
 import { db } from "@/db";
 import { adminListings, coverPhotos } from "@/db/listings";
-import { countToVerify } from "@/db/orders";
 import { requireAdmin } from "@/lib/auth";
 import { PAGE_SIZE, param, type Params } from "@/lib/catalogue";
 import { Search } from "../icons";
@@ -28,7 +27,6 @@ async function Dashboard({ searchParams }: { searchParams: Promise<Params> }) {
     PAGE_SIZE,
   );
 
-  const toVerify = await countToVerify(db());
   const covers = await coverPhotos(db());
 
   return (
@@ -41,10 +39,10 @@ async function Dashboard({ searchParams }: { searchParams: Promise<Params> }) {
           Nouvelle annonce
         </Link>
         <Link
-          href="/admin/commandes"
+          href="/admin/apparence"
           className="flex h-11 items-center rounded-3xl bg-surface px-5 font-medium"
         >
-          Commandes{toVerify > 0 && ` (${toVerify} à vérifier)`}
+          Accueil
         </Link>
         <Link
           href="/admin/avis"
@@ -57,12 +55,6 @@ async function Dashboard({ searchParams }: { searchParams: Promise<Params> }) {
           className="flex h-11 items-center rounded-3xl bg-surface px-5 font-medium"
         >
           Statistiques
-        </Link>
-        <Link
-          href="/admin/apparence"
-          className="flex h-11 items-center rounded-3xl bg-surface px-5 font-medium"
-        >
-          Image d&apos;accueil
         </Link>
         <form action={logout}>
           <button className="h-11 rounded-3xl bg-surface px-5 font-medium">Se déconnecter</button>

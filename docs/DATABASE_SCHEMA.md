@@ -31,7 +31,7 @@ L'index ne connaît pas l'heure : avant d'insérer une commande, la même transa
 `key`, `window_start`, `count` — suivi de commande (BR-30).
 
 ## settings
-`key` (clé primaire), `value`. Sans `id` ni `created_at`. `hero_image` : image de fond de l'accueil (F18).
+`key` (clé primaire), `value`. Sans `id` ni `created_at`. `hero_image` : image de fond de l'accueil (F18). `home_title`, `home_bio` : titre et bio de l'accueil (F19).
 
 ## Calculé, jamais stocké
 Réservé, note moyenne, CA, taux de litige.

@@ -104,3 +104,6 @@ Statut : ✅ validé · 🟡 provisoire · ❓ ouvert
 | 49 | Filtres | Deux seulement : HDV et héros (regroupés). Recherche, tri et raccourcis HDV restent | ✅ |
 | 50 | Achat | Plus de formulaire de commande : bouton « Contacter sur WhatsApp » avec le détail du compte et le prix en brouillon. Remplace F06 et l'acceptation des règles avant commande | ✅ |
 | 51 | Vente | L'admin marque le compte vendu à la main (BR-22). Ces ventes n'entrent pas dans les statistiques, calculées sur les commandes livrées. Suivi, paiement et avis des anciennes commandes conservés | ✅ |
+| 52 | Filtres | Recherche et deux filtres sur la même ligne ; raccourcis HDV retirés (modifie 49) | ✅ |
+| 53 | Textes d'accueil | Titre et bio modifiables dans l'admin, page « Accueil » avec l'image (F19) | ✅ |
+| 54 | Admin | Pas de navigation publique, « Voir le site » à la place de WhatsApp ; lien « Commandes » retiré, la page reste à /admin/commandes | ✅ |

@@ -3,7 +3,8 @@ import { Suspense } from "react";
 import type { Params } from "@/lib/catalogue";
 import { Catalogue } from "./catalogue";
 import { HeroImage } from "./hero-image";
-import { ChevronRight } from "./icons";
+import { Heading, HomeText } from "./home-text";
+import { ChevronRight } from "../icons";
 import { Reviews } from "./reviews";
 
 const STEPS = [
@@ -37,9 +38,9 @@ export default function Home({ searchParams }: { searchParams: Promise<Params> }
             <ChevronRight className="size-3" />
             <span className="text-foreground">Comptes Clash of Clans</span>
           </nav>
-          <h1 className="mt-3 text-lg font-semibold lg:mb-4 lg:text-[32px] lg:leading-10 lg:font-bold">
-            Acheter un compte Clash of Clans
-          </h1>
+          <Suspense fallback={<Heading />}>
+            <HomeText />
+          </Suspense>
         </div>
       </div>
 

@@ -13,7 +13,7 @@ import { publicListing } from "@/db/listings";
 import { publicReviews } from "@/db/reviews";
 import { photoUrl } from "@/lib/cloudinary";
 import { accountDetails, accountMessage, whatsappHref } from "@/lib/whatsapp";
-import { Chat, Shield } from "../../icons";
+import { Chat, Shield } from "../../../icons";
 import { CountView } from "./count-view";
 import { Gallery } from "./gallery";
 

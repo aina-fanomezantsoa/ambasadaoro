@@ -12,6 +12,7 @@ Entrées validées avec Zod. Réponse : `{ ok: true, data }` ou `{ ok: false, er
 | `markSold` | admin | annonce | non publiée, commande en cours |
 | `signUpload`, `addPhoto`, `deletePhoto` | admin | annonce ou photo | 8 photos atteintes, photo trop lourde ou mauvais format, dernière photo d'une annonce publiée |
 | `signBackground`, `saveBackground`, `removeBackground` | admin | image d'accueil | photo trop lourde ou mauvais format |
+| `saveHome` | admin | titre, bio | texte trop long |
 | `acceptPayment`, `rejectPayment` | admin | paiement | déjà traité |
 | `markDelivered`, `cancelOrder` | admin | commande | statut incompatible |
 | `openDispute`, `closeDispute` | admin | commande, motif, issue | délai de 7 jours dépassé |

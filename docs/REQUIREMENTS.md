@@ -24,6 +24,7 @@ Sources : [CAHIER_DES_CHARGES.md](CAHIER_DES_CHARGES.md), [DECISIONS.md](DECISIO
 | F16 | Admin : statistiques | Chiffre d'affaires, nombre de ventes, taux de litige, par mois |
 | F17 | Alerte | E-mail à l'admin quand une référence de paiement est déposée |
 | F18 | Image d'accueil | L'admin choisit ou retire l'image de fond du catalogue (JPEG, PNG ou WebP, 5 Mo) |
+| F19 | Titre et bio d'accueil | L'admin modifie le titre (120 car.) et la bio (1000 car.) du catalogue ; titre vide = titre d'origine, bio vide = pas de paragraphe |
 
 ## V2
 
