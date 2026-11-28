@@ -77,3 +77,12 @@ Statut : ✅ validé · 🟡 provisoire · ❓ ouvert
 |---|-------|----------|--------|
 | 37 | Référence visuelle | Mise en page inspirée de la page comptes de u7buy.com, sans leur marque ni leurs contenus | ✅ |
 | 38 | Accent | Orange à la place de l’or (remplace la couleur de 17) | 🟡 |
+
+## Série 8 — achat (2026-11-28)
+
+| # | Sujet | Décision | Statut |
+|---|-------|----------|--------|
+| 40 | Paiement et suivi | Une seule page `/suivi` : code et téléphone, puis envoi de l'ID ; code et téléphone gardés sur l'appareil | 🟡 |
+| 41 | Essais de suivi | Seuls les essais ratés comptent dans la limite de BR-30 | 🟡 |
+| 42 | Anti-abus commande | 10 commandes par heure et par adresse IP, en plus de BR-12 | 🟡 |
+| 43 | Expéditeur de l'alerte | `onboarding@resend.dev` : `ADMIN_EMAIL` doit être l'adresse du compte Resend | 🟡 |

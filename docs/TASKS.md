@@ -26,11 +26,15 @@ Resp. : « dev » partout (un seul développeur). Diff. : F facile, M moyen, D d
 ## Sprint 3 — achat (jours 10 à 15, le plus risqué)
 | ID | Tâche | Resp. | Dépend de | Diff. | Validation | État |
 |----|-------|------|-----------|-------|------------|------|
-| T08 | Page règles et garantie (F12) | dev | T01 | F | liée à la commande, badge visible | ⬜ |
-| T09 | Commande et réservation 1 h (F06) | dev | T07, T08 | D | deux commandes simultanées : une seule passe | ⬜ |
-| T10 | ID de transaction et alerte e-mail (F07, F17) | dev | T09 | M | ID en double refusé, e-mail reçu | ⬜ |
-| T11 | Admin commandes et litiges (F15) | dev | T10 | D | cycle complet jusqu'à livré et litige | ⬜ |
-| T12 | Suivi et historique local (F08) | dev | T09 | M | code et téléphone requis, essais limités | ⬜ |
+| T08 | Page règles et garantie (F12) | dev | T01 | F | liée à la commande, badge visible | ✅ |
+| T09 | Commande et réservation 1 h (F06) | dev | T07, T08 | D | deux commandes simultanées : une seule passe | ✅ |
+| T10 | ID de transaction et alerte e-mail (F07, F17) | dev | T09 | M | ID en double refusé, e-mail reçu | 🟡 |
+| T11 | Admin commandes et litiges (F15) | dev | T10 | D | cycle complet jusqu'à livré et litige | ✅ |
+| T12 | Suivi et historique local (F08) | dev | T09 | M | code et téléphone requis, essais limités | ✅ |
+
+Écart : T08 à T12, parcours commande → ID → validation → livraison → litige essayé en local (base PGlite) ; à revérifier en ligne (T16).
+Écart : T09, la commande simultanée est testée sur PGlite (une seule session) ; la garantie vient des index uniques, pas encore essayée sur Neon.
+Écart : T10, ID en double refusé (test) ; la réception de l'e-mail d'alerte reste à vérifier avec la vraie clé Resend.
 
 ## Sprint 4 — confiance et finition (jours 16 à 20)
 | ID | Tâche | Resp. | Dépend de | Diff. | Validation | État |

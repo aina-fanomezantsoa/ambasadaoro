@@ -4,7 +4,7 @@ Entrées validées avec Zod. Réponse : `{ ok: true, data }` ou `{ ok: false, er
 
 | Action | Rôle | Entrées → sortie | Erreurs |
 |--------|------|------------------|---------|
-| `createOrder` | public | annonce, nom, téléphone, acceptations → code | indisponible, commande déjà active |
+| `createOrder` | public | annonce, nom, téléphone, acceptations → code et téléphone normalisé | indisponible, commande déjà active, trop de commandes |
 | `submitPayment` | public + code et téléphone | opérateur, ID → statut | expirée, ID déjà utilisé |
 | `trackOrder` | public | code, téléphone → état | introuvable, trop d'essais |
 | `createReview` | public + code et téléphone | note, commentaire | non livrée, déjà noté |
