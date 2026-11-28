@@ -2,7 +2,7 @@ import { and, count, desc, eq, inArray, lte, sql } from "drizzle-orm";
 import type { PgDatabase, PgQueryResultHKT } from "drizzle-orm/pg-core";
 import { UserError } from "../lib/action.ts";
 import { canOpenDispute, HOLD_MS, isTxId, normalizeTxId, orderCode } from "../lib/rules.ts";
-import { disputes, listings, orders, payments } from "./schema.ts";
+import { disputes, listings, orders, payments, reviews } from "./schema.ts";
 
 type Database = PgDatabase<PgQueryResultHKT, Record<string, unknown>>;
 
@@ -63,10 +63,11 @@ export async function createOrder(
 export async function findOrder(database: Database, code: string, phone: string, now: Date) {
   await expireOverdue(database, now);
   const [row] = await database
-    .select({ order: orders, title: listings.title, dispute: disputes.status })
+    .select({ order: orders, title: listings.title, dispute: disputes.status, review: reviews.id })
     .from(orders)
     .innerJoin(listings, eq(listings.id, orders.listingId))
     .leftJoin(disputes, eq(disputes.orderId, orders.id))
+    .leftJoin(reviews, eq(reviews.orderId, orders.id))
     .where(and(eq(orders.code, code), eq(orders.buyerPhone, phone)));
   if (!row) return null;
   const { order } = row;
@@ -79,6 +80,7 @@ export async function findOrder(database: Database, code: string, phone: string,
     expiresAt: order.expiresAt,
     rejections: order.rejections,
     dispute: row.dispute,
+    reviewed: row.review !== null,
   };
 }
 

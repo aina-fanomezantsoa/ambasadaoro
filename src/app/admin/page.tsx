@@ -33,6 +33,12 @@ async function Dashboard() {
         >
           Commandes{toVerify > 0 && ` (${toVerify} à vérifier)`}
         </Link>
+        <Link
+          href="/admin/avis"
+          className="flex h-11 items-center rounded-3xl bg-surface px-5 font-medium"
+        >
+          Avis
+        </Link>
         <form action={logout}>
           <button className="h-11 rounded-3xl bg-surface px-5 font-medium">Se déconnecter</button>
         </form>

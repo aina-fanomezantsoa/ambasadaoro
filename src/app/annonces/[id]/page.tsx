@@ -7,9 +7,11 @@ import { Suspense } from "react";
 import { z } from "zod";
 import { FavoriteButton } from "@/components/favorite-button";
 import { Photo } from "@/components/photo";
+import { Rating } from "@/components/rating";
 import { Status } from "@/components/status";
 import { db } from "@/db";
 import { publicListing } from "@/db/listings";
+import { publicReviews } from "@/db/reviews";
 import { HEROES } from "@/lib/limits";
 import { whatsappHref } from "@/lib/whatsapp";
 import { Chat, Shield } from "../../icons";
@@ -28,6 +30,7 @@ async function Listing({ params }: { params: Promise<{ id: string }> }) {
   const listing = await publicListing(db(), id, new Date());
   if (!listing) notFound();
 
+  const reviews = await publicReviews(db());
   const host = (await headers()).get("host");
   const whatsapp = whatsappHref(
     `Bonjour, je suis intéressé par le compte « ${listing.title} » (HDV ${listing.townHall}, ` +
@@ -93,6 +96,12 @@ async function Listing({ params }: { params: Promise<{ id: string }> }) {
           <Shield className="size-5 text-accent" />
           Garantie 7 jours · règles et risques
         </Link>
+        {reviews.count > 0 && (
+          <Link href="/#avis" className="flex min-h-11 w-full items-center gap-2 underline">
+            <Rating value={reviews.average} />
+            <span className="text-muted">sur {reviews.count} avis</span>
+          </Link>
+        )}
         {whatsapp && (
           <a
             href={whatsapp}
