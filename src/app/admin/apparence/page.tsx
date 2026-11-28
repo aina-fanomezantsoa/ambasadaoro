@@ -3,16 +3,18 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { Photo } from "@/components/photo";
 import { db } from "@/db";
-import { heroImage } from "@/db/settings";
+import { heroImage, homeText } from "@/db/settings";
 import { requireAdmin } from "@/lib/auth";
 import { removeBackground } from "../annonces/actions";
 import { PhotoUpload } from "../annonces/photo-upload";
+import { TextForm } from "./text-form";
 
-export const metadata: Metadata = { title: "Image d'accueil", robots: { index: false } };
+export const metadata: Metadata = { title: "Accueil", robots: { index: false } };
 
 async function Editor() {
   await requireAdmin();
   const current = await heroImage(db());
+  const text = await homeText(db());
 
   async function remove() {
     "use server";
@@ -21,6 +23,9 @@ async function Editor() {
 
   return (
     <>
+      <h2 className="mt-4 text-lg font-semibold">Titre et bio</h2>
+      <TextForm {...text} />
+      <h2 className="mt-10 text-lg font-semibold">Image de fond</h2>
       {current ? (
         <>
           <Photo
@@ -51,7 +56,7 @@ export default function AppearancePage() {
       <Link href="/admin" className="inline-flex min-h-11 items-center text-muted">
         ← Annonces
       </Link>
-      <h1 className="text-xl font-bold">Image d&apos;accueil</h1>
+      <h1 className="text-xl font-bold">Accueil</h1>
       <Suspense fallback={<p className="mt-3 text-muted">Chargement…</p>}>
         <Editor />
       </Suspense>
