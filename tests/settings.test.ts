@@ -6,7 +6,8 @@ import { HOME_TITLE, homeText, saveHomeText } from "../src/db/settings";
 
 const db = drizzle(new PGlite());
 
-beforeAll(() => migrate(db, { migrationsFolder: "drizzle" }));
+// Starting PGlite can pass the default 10 s when all test files run at once.
+beforeAll(() => migrate(db, { migrationsFolder: "drizzle" }), 30_000);
 
 it("F19: default title until the admin chooses one, and again when emptied", async () => {
   expect(await homeText(db)).toEqual({ title: HOME_TITLE, bio: "" });
