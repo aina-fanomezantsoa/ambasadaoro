@@ -12,7 +12,7 @@ import { listings } from "@/db/schema";
 import { requireAdmin } from "@/lib/auth";
 import { MAX_PHOTOS } from "@/lib/limits";
 import { ActionButton } from "../action-button";
-import { deletePhoto, publishListing, withdrawListing } from "../actions";
+import { deletePhoto, markSold, publishListing, withdrawListing } from "../actions";
 import { ListingFields } from "../listing-fields";
 import { PhotoUpload } from "../photo-upload";
 
@@ -38,6 +38,15 @@ async function Editor({ params }: { params: Promise<{ id: string }> }) {
             id={id}
             label="Publier"
             className="bg-accent text-on-accent"
+          />
+        )}
+        {listing.status === "published" && (
+          <ActionButton
+            action={markSold}
+            id={id}
+            label="Marquer vendu"
+            className="bg-accent text-on-accent"
+            confirm="Marquer ce compte vendu ? Il ne pourra plus être remis en vente."
           />
         )}
         {(listing.status === "draft" || listing.status === "published") && (

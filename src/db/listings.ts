@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, gt, inArray, or, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gt, ilike, inArray, or, sql } from "drizzle-orm";
 import type { PgDatabase, PgQueryResultHKT } from "drizzle-orm/pg-core";
 import { isPublic } from "../lib/catalogue.ts";
 import { listingPhotos, listings, orders } from "./schema.ts";
@@ -14,6 +14,32 @@ const activeOrder = (now: Date) =>
 
 const onSale = inArray(listings.status, ["published", "sold"]);
 
+/** The first photo of each listing, by listing id. */
+export async function coverPhotos(database: Database) {
+  const rows = await database
+    .selectDistinctOn([listingPhotos.listingId])
+    .from(listingPhotos)
+    .orderBy(listingPhotos.listingId, listingPhotos.position);
+  return new Map(rows.map((p) => [p.listingId, p.publicId]));
+}
+
+/** The admin list: every status, newest first, searched by title, one page at a time. */
+export async function adminListings(database: Database, q: string, page: number, size: number) {
+  // % and _ typed by the admin are ordinary characters.
+  const where = q ? ilike(listings.title, `%${q.replace(/[\\%_]/g, "\\$&")}%`) : undefined;
+  const total = await database.$count(listings, where);
+  const pages = Math.max(1, Math.ceil(total / size));
+  const current = Number.isInteger(page) && page > 0 ? Math.min(page, pages) : 1;
+  const rows = await database
+    .select()
+    .from(listings)
+    .where(where)
+    .orderBy(desc(listings.createdAt), asc(listings.id)) // the id keeps pages stable on equal dates
+    .limit(size)
+    .offset((current - 1) * size);
+  return { rows, total, page: current, pages };
+}
+
 /** What the catalogue shows, with the cover photo and the reserved flag. */
 export async function publicListings(database: Database, now: Date) {
   const rows = await database
@@ -21,16 +47,12 @@ export async function publicListings(database: Database, now: Date) {
     .from(listings)
     .where(onSale)
     .orderBy(desc(listings.createdAt));
-  const covers = await database
-    .selectDistinctOn([listingPhotos.listingId])
-    .from(listingPhotos)
-    .orderBy(listingPhotos.listingId, listingPhotos.position);
   const taken = await database
     .select({ id: orders.listingId })
     .from(orders)
     .where(activeOrder(now));
 
-  const cover = new Map(covers.map((p) => [p.listingId, p.publicId]));
+  const cover = await coverPhotos(database);
   const reserved = new Set(taken.map((o) => o.id));
   return rows
     .filter((l) => isPublic(l, now))

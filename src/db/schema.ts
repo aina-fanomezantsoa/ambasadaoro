@@ -158,3 +158,9 @@ export const rateLimits = pgTable("rate_limits", {
   windowStart: at("window_start").notNull(),
   count: integer().notNull().default(0),
 });
+
+/** Site settings edited in the admin, e.g. the home background image. */
+export const settings = pgTable("settings", {
+  key: text().primaryKey(),
+  value: text().notNull(),
+});

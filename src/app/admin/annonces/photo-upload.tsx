@@ -2,27 +2,31 @@
 
 import { useState, type ChangeEvent } from "react";
 import { MAX_PHOTO_BYTES } from "@/lib/limits";
-import { addPhoto, signUpload } from "./actions";
+import { addPhoto, saveBackground, signBackground, signUpload } from "./actions";
 
 const TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 /** Sends one file straight to Cloudinary, then records it; returns the error message, if any. */
-async function upload(listingId: string, file: File) {
+async function upload(listingId: string | undefined, file: File) {
   if (!TYPES.includes(file.type) || file.size > MAX_PHOTO_BYTES) {
     return `${file.name} : JPEG, PNG ou WebP de 5 Mo au maximum.`;
   }
-  const signed = await signUpload({ id: listingId });
+  const signed = listingId ? await signUpload({ id: listingId }) : await signBackground();
   if (!signed.ok) return signed.error;
   const body = new FormData();
   for (const [key, value] of Object.entries(signed.data.fields)) body.set(key, String(value));
   body.set("file", file);
   const response = await fetch(signed.data.url, { method: "POST", body });
   if (!response.ok) return `${file.name} : envoi refusé.`;
-  const added = await addPhoto({ id: listingId, publicId: signed.data.fields.public_id });
+  const publicId = signed.data.fields.public_id;
+  const added = listingId
+    ? await addPhoto({ id: listingId, publicId })
+    : await saveBackground({ publicId });
   return added.ok ? "" : added.error;
 }
 
-export function PhotoUpload({ listingId, room }: { listingId: string; room: number }) {
+/** Without a listing, the file becomes the home background. */
+export function PhotoUpload({ listingId, room }: { listingId?: string; room: number }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
 
@@ -46,11 +50,11 @@ export function PhotoUpload({ listingId, room }: { listingId: string; room: numb
   return (
     <div className="mt-4">
       <label className="block font-medium">
-        Ajouter des photos
+        {listingId ? "Ajouter des photos" : "Choisir une image"}
         <input
           type="file"
           accept={TYPES.join(",")}
-          multiple
+          multiple={!!listingId}
           disabled={busy || room <= 0}
           onChange={choose}
           className="mt-1 block min-h-11 w-full file:mr-3 file:h-11 file:rounded-3xl file:border-0 file:bg-surface file:px-5 file:text-foreground"

@@ -2,7 +2,7 @@ import { PGlite } from "@electric-sql/pglite";
 import { drizzle } from "drizzle-orm/pglite";
 import { migrate } from "drizzle-orm/pglite/migrator";
 import { beforeAll, describe, expect, it } from "vitest";
-import { countView, publicListing, publicListings } from "../src/db/listings";
+import { adminListings, countView, publicListing, publicListings } from "../src/db/listings";
 import * as s from "../src/db/schema";
 import { listingForm } from "../src/lib/listing-form";
 import { cloudinarySignature, publishErrors } from "../src/lib/rules";
@@ -54,6 +54,13 @@ describe("listings", () => {
     const rows = await db.select().from(s.listings);
     expect(rows.find((l) => l.id === ids.free)?.views).toBe(1);
     expect(rows.find((l) => l.id === ids.draft)?.views).toBe(0);
+  });
+
+  it("F14: the admin list searches titles and pages every status", async () => {
+    const second = await adminListings(db, "", 2, 3);
+    expect([second.total, second.pages, second.rows.length]).toEqual([4, 2, 1]);
+    expect((await adminListings(db, "DRA", 99, 3)).rows.map((l) => l.title)).toEqual(["draft"]);
+    expect((await adminListings(db, "%", NaN, 3)).total).toBe(0);
   });
 
   it("BR-02: publication needs title, price, town hall and a photo", () => {

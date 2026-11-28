@@ -2,13 +2,14 @@ import Link from "next/link";
 import { Suspense } from "react";
 import type { Params } from "@/lib/catalogue";
 import { Catalogue } from "./catalogue";
+import { HeroImage } from "./hero-image";
 import { ChevronRight } from "./icons";
 import { Reviews } from "./reviews";
 
 const STEPS = [
-  "Choisissez un compte disponible et commandez avec votre nom et votre numéro : il vous est réservé 1 heure.",
-  "Payez par MVola ou Orange Money, puis saisissez l'ID de la transaction.",
-  "Nous vérifions le paiement et vous remettons le compte par WhatsApp ou par appel.",
+  "Choisissez un compte disponible et touchez « Contacter sur WhatsApp » : le message est déjà prêt.",
+  "Convenez avec nous du paiement par MVola ou Orange Money.",
+  "Après vérification du paiement, nous vous remettons le compte par WhatsApp ou par appel.",
 ];
 
 const FAQ = [
@@ -20,15 +21,15 @@ const FAQ = [
     "Acheter un compte est-il autorisé par Supercell ?",
     "Non. Les conditions d'utilisation de Supercell l'interdisent : le compte peut être banni ou perdu.",
   ],
-  [
-    "Faut-il créer un compte sur ce site ?",
-    "Non. Un code de commande et votre numéro suffisent pour suivre l'achat.",
-  ],
+  ["Faut-il créer un compte sur ce site ?", "Non. Tout se passe par WhatsApp."],
 ];
 
 export default function Home({ searchParams }: { searchParams: Promise<Params> }) {
   return (
-    <>
+    <div className="relative isolate">
+      <Suspense>
+        <HeroImage />
+      </Suspense>
       <div className="bg-[radial-gradient(ellipse_at_top,#2a3142_0%,transparent_70%)]">
         <div className="mx-auto max-w-[1200px] px-4 pt-5">
           <nav aria-label="Fil d'Ariane" className="flex items-center gap-1 text-xs text-muted">
@@ -81,6 +82,6 @@ export default function Home({ searchParams }: { searchParams: Promise<Params> }
           ))}
         </section>
       </div>
-    </>
+    </div>
   );
 }
