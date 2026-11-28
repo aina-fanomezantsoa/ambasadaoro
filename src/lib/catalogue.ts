@@ -25,14 +25,6 @@ export const SORTS = {
   town_hall: "HDV le plus élevé",
 } as const;
 
-/** Price ranges in ariary, as "min-max" (empty max = no limit). */
-export const PRICES = [
-  ["0-100000", "Moins de 100 000 Ar"],
-  ["100000-200000", "100 000 à 200 000 Ar"],
-  ["200000-300000", "200 000 à 300 000 Ar"],
-  ["300000-", "Plus de 300 000 Ar"],
-] as const;
-
 export const PAGE_SIZE = 12;
 const SOLD_VISIBLE_MS = 7 * 86_400_000;
 
@@ -63,23 +55,12 @@ export function searchCatalogue<L extends CatalogueListing>(
 ) {
   const q = param(params, "q").toLowerCase();
   const townHall = num(params, "hdv");
-  const builderHall = num(params, "mdo");
-  const trophies = num(params, "trophees");
-  const heroCount = num(params, "nbheros");
-  const [, minText, maxText] = /^(\d+)-(\d*)$/.exec(param(params, "prix")) ?? [];
-  const min = Number(minText) || null;
-  const max = Number(maxText) || null;
 
   const found = listings.filter(
     (l) =>
       isPublic(l, now) &&
       (!q || l.title.toLowerCase().includes(q)) &&
       (!townHall || l.townHall === townHall) &&
-      (!builderHall || (l.builderHall ?? 0) >= builderHall) &&
-      (!trophies || (l.trophies ?? 0) >= trophies) &&
-      (!heroCount || Object.values(l.heroes).filter((level) => level > 0).length >= heroCount) &&
-      (!min || l.priceAr >= min) &&
-      (!max || l.priceAr <= max) &&
       Object.keys(HEROES).every((hero) => (l.heroes[hero] ?? 0) >= (num(params, hero) ?? 0)),
   );
 
