@@ -95,3 +95,12 @@ Statut : ✅ validé · 🟡 provisoire · ❓ ouvert
 | 45 | Avis publics | Moyenne et 6 derniers avis sur l'accueil, moyenne sur chaque fiche ; ni nom ni téléphone | 🟡 |
 | 46 | Modération | Un avis masqué peut être réaffiché ; il ne compte pas dans la moyenne | 🟡 |
 | 47 | Statistiques | Mois de livraison à l'heure d'Antananarivo ; « ventes » = commandes livrées, remboursées comprises (le CA les exclut) | 🟡 |
+
+## Série 10 — retours sur le site (2026-11-28)
+
+| # | Sujet | Décision | Statut |
+|---|-------|----------|--------|
+| 48 | Image d'accueil | Image de fond derrière le titre et les filtres, choisie dans l'admin (F18) | ✅ |
+| 49 | Filtres | Deux seulement : HDV et héros (regroupés). Recherche, tri et raccourcis HDV restent | ✅ |
+| 50 | Achat | Plus de formulaire de commande : bouton « Contacter sur WhatsApp » avec le détail du compte et le prix en brouillon. Remplace F06 et l'acceptation des règles avant commande | ✅ |
+| 51 | Vente | L'admin marque le compte vendu à la main (BR-22). Ces ventes n'entrent pas dans les statistiques, calculées sur les commandes livrées. Suivi, paiement et avis des anciennes commandes conservés | ✅ |

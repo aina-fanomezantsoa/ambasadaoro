@@ -7,22 +7,23 @@ Sources : [CAHIER_DES_CHARGES.md](CAHIER_DES_CHARGES.md), [DECISIONS.md](DECISIO
 | ID | Fonction | Critère d'acceptation |
 |----|----------|-----------------------|
 | F01 | Accueil | Les annonces cochées « à la une » par l'admin s'affichent en premier |
-| F02 | Catalogue et filtres | Filtres HDV, nombre et niveau des héros, ligue/trophées, maison des ouvriers, fourchette de prix en Ar ; combinables ; pagination |
+| F02 | Catalogue et filtres | Filtres HDV et niveau des héros (regroupés) ; combinables ; pagination |
 | F03 | Recherche et tri | Recherche par texte ; tri par prix, popularité (vues) et HDV |
-| F04 | Fiche compte | Photos du compte, prix, HDV, héros, trophées/ligue, gemmes, niveau XP, maison des ouvriers, skins, décors |
-| F05 | Statuts visibles | Disponible, réservé et vendu sont affichés ; seul un compte disponible est commandable |
-| F06 | Commande | Nom + téléphone ; un code de commande est donné ; l'annonce passe « réservé » 1 h ; deux acheteurs ne peuvent pas réserver le même compte |
+| F04 | Fiche compte | Une grande photo, les autres en vignettes cliquables ; prix, HDV, héros, trophées/ligue, gemmes, niveau XP, maison des ouvriers, skins, décors |
+| F05 | Statuts visibles | Disponible, réservé et vendu sont affichés |
+| F06 | Commande | Retirée du site (décision 50) : l'achat commence sur WhatsApp |
 | F07 | Paiement Mobile Money | Numéros MVola et Orange Money et montant affichés ; l'acheteur saisit seulement l'ID de transaction (ni capture ni vidéo) ; l'admin vérifie à la main (F15) ; sans ID après 1 h, l'annonce redevient disponible |
 | F08 | Suivi et historique | Avec le code et le téléphone, l'acheteur voit l'état ; les commandes passées depuis l'appareil sont listées |
 | F09 | Favoris | Ajout et retrait, conservés sur l'appareil |
-| F10 | WhatsApp | Bouton sur chaque fiche avec un message citant l'annonce |
+| F10 | WhatsApp | Bouton principal « Contacter sur WhatsApp » sur chaque compte disponible, brouillon avec le détail du compte et le prix |
 | F11 | Avis | Note sur 5 et commentaire, uniquement pour une commande livrée ; moyenne affichée |
-| F12 | Confiance | Badge « Garantie 7 jours » et page règles, risques et garantie, acceptée avant la commande |
+| F12 | Confiance | Badge « Garantie 7 jours » et page règles, risques et garantie |
 | F13 | Admin : accès | Connexion réservée au seul admin ; aucune page ou action admin accessible sans elle |
-| F14 | Admin : annonces | Créer, modifier, publier, retirer ; brouillon invisible du public |
+| F14 | Admin : annonces | Créer, modifier, publier, retirer, marquer vendu ; brouillon invisible du public |
 | F15 | Admin : commandes | Valider ou refuser un paiement, marquer livré, ouvrir et clore un litige (remboursement ou échange) |
 | F16 | Admin : statistiques | Chiffre d'affaires, nombre de ventes, taux de litige, par mois |
 | F17 | Alerte | E-mail à l'admin quand une référence de paiement est déposée |
+| F18 | Image d'accueil | L'admin choisit ou retire l'image de fond du catalogue (JPEG, PNG ou WebP, 5 Mo) |
 
 ## V2
 

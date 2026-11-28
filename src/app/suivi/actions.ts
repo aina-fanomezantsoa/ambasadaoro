@@ -14,29 +14,6 @@ import { normalizePhone } from "@/lib/rules";
 
 const phone = z.string().max(30).transform(normalizePhone);
 
-const create = action(
-  z.object({
-    listingId: z.uuid(),
-    name: z.string().trim().min(2).max(80),
-    phone,
-    rules: z.literal("on"), // BR-13
-    adult: z.literal("on"), // BR-13
-  }),
-  async ({ listingId, name, phone }) => {
-    if (!phone) throw new UserError("Numéro malgache invalide (ex. 034 12 345 67).");
-    // Stops one visitor from reserving the whole stock with made-up numbers.
-    if (!(await allowAttempt(db(), `order:${await clientIp()}`, 10, 60))) {
-      throw new UserError("Trop de commandes. Réessayez dans une heure.");
-    }
-    const code = await orders.createOrder(db(), { listingId, name, phone }, new Date());
-    return { code, phone };
-  },
-);
-
-export async function createOrder(_state: unknown, form: FormData) {
-  return create(Object.fromEntries(form));
-}
-
 const credentials = z.object({ code: z.string().trim().toUpperCase().max(20), phone });
 type Credentials = z.output<typeof credentials>;
 

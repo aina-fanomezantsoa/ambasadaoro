@@ -7,7 +7,8 @@ import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import { db } from "@/db";
 import { isReserved } from "@/db/listings";
-import { listingPhotos, listings } from "@/db/schema";
+import { listingPhotos, listings, settings } from "@/db/schema";
+import { HERO_IMAGE, heroImage } from "@/db/settings";
 import { action, UserError } from "@/lib/action";
 import { requireAdmin } from "@/lib/auth";
 import { env } from "@/lib/env";
@@ -111,12 +112,33 @@ export async function withdrawListing(_state: unknown, form: FormData) {
   return withdraw(Object.fromEntries(form));
 }
 
-const sign = action(byId, async ({ id }) => {
-  await findListing(id);
-  await roomForOne(id);
+// BR-22: the sale happens on WhatsApp, so the admin records it by hand.
+const sell = action(byId, async ({ id }) => {
+  const listing = await findListing(id);
+  if (listing.status !== "published") {
+    throw new UserError("Seule une annonce publiée peut être marquée vendue.");
+  }
+  if (await isReserved(db(), id, new Date())) {
+    throw new UserError("Une commande est en cours sur ce compte : traitez-la d'abord.");
+  }
+  await db()
+    .update(listings)
+    .set({ status: "sold", soldAt: new Date() }) // BR-06 counts from here
+    .where(eq(listings.id, id));
+  refresh();
+  return "Compte marqué vendu.";
+});
+
+export async function markSold(_state: unknown, form: FormData) {
+  await requireAdmin();
+  return sell(Object.fromEntries(form));
+}
+
+/** What the browser needs to send one image straight to Cloudinary. */
+function signedUpload(folder: string) {
   const params = {
     allowed_formats: PHOTO_FORMATS.join(","),
-    public_id: `ambasadaoro/${id}/${randomUUID()}`, // chosen here, checked again in addPhoto
+    public_id: `ambasadaoro/${folder}/${randomUUID()}`, // chosen here, checked again when recorded
     timestamp: timestamp(),
   };
   return {
@@ -127,6 +149,27 @@ const sign = action(byId, async ({ id }) => {
       signature: cloudinarySignature(params, env("CLOUDINARY_API_SECRET")),
     },
   };
+}
+
+/** The browser cannot be trusted about size or format: ask Cloudinary what it received. */
+async function checkImage(publicId: string) {
+  const credentials = `${env("CLOUDINARY_API_KEY")}:${env("CLOUDINARY_API_SECRET")}`;
+  const response = await fetch(cloudinaryApi(`resources/image/upload/${publicId}`), {
+    headers: { authorization: `Basic ${Buffer.from(credentials).toString("base64")}` },
+    cache: "no-store",
+  });
+  if (!response.ok) throw new UserError("Photo introuvable chez l'hébergeur d'images.");
+  const image = z.object({ bytes: z.number(), format: z.string() }).parse(await response.json());
+  if (image.bytes > MAX_PHOTO_BYTES || !PHOTO_FORMATS.includes(image.format)) {
+    await destroyImage(publicId);
+    throw new UserError("Photo refusée : JPEG, PNG ou WebP de 5 Mo au maximum.");
+  }
+}
+
+const sign = action(byId, async ({ id }) => {
+  await findListing(id);
+  await roomForOne(id);
+  return signedUpload(id);
 });
 
 export async function signUpload(input: unknown) {
@@ -139,18 +182,7 @@ const add = action(
   async ({ id, publicId }) => {
     if (!publicId.startsWith(`ambasadaoro/${id}/`)) throw new UserError("Photo refusée.");
     await findListing(id);
-    // The browser cannot be trusted about size or format: ask Cloudinary what it received.
-    const credentials = `${env("CLOUDINARY_API_KEY")}:${env("CLOUDINARY_API_SECRET")}`;
-    const response = await fetch(cloudinaryApi(`resources/image/upload/${publicId}`), {
-      headers: { authorization: `Basic ${Buffer.from(credentials).toString("base64")}` },
-      cache: "no-store",
-    });
-    if (!response.ok) throw new UserError("Photo introuvable chez l'hébergeur d'images.");
-    const image = z.object({ bytes: z.number(), format: z.string() }).parse(await response.json());
-    if (image.bytes > MAX_PHOTO_BYTES || !PHOTO_FORMATS.includes(image.format)) {
-      await destroyImage(publicId);
-      throw new UserError("Photo refusée : JPEG, PNG ou WebP de 5 Mo au maximum.");
-    }
+    await checkImage(publicId);
     const { last } = await roomForOne(id);
     await db()
       .insert(listingPhotos)
@@ -181,4 +213,50 @@ const remove = action(byId, async ({ id }) => {
 export async function deletePhoto(_state: unknown, form: FormData) {
   await requireAdmin();
   return remove(Object.fromEntries(form));
+}
+
+// F18: the home background is a single image, kept in the settings table.
+const signHero = action(z.object({}), async () => signedUpload("site"));
+
+export async function signBackground() {
+  await requireAdmin();
+  return signHero({});
+}
+
+/** The new value is already stored: a leftover file on Cloudinary is only worth a log. */
+async function discard(publicId: string | null) {
+  if (publicId) await destroyImage(publicId).catch(console.error);
+}
+
+const setHero = action(
+  z.object({ publicId: z.string().regex(/^ambasadaoro\/site\/[0-9a-f-]+$/) }),
+  async ({ publicId }) => {
+    await checkImage(publicId);
+    const previous = await heroImage(db());
+    await db()
+      .insert(settings)
+      .values({ key: HERO_IMAGE, value: publicId })
+      .onConflictDoUpdate({ target: settings.key, set: { value: publicId } });
+    if (previous !== publicId) await discard(previous);
+    refresh();
+    return null;
+  },
+);
+
+export async function saveBackground(input: unknown) {
+  await requireAdmin();
+  return setHero(input);
+}
+
+const dropHero = action(z.object({}), async () => {
+  const previous = await heroImage(db());
+  await db().delete(settings).where(eq(settings.key, HERO_IMAGE));
+  await discard(previous);
+  refresh();
+  return "Image retirée.";
+});
+
+export async function removeBackground() {
+  await requireAdmin();
+  return dropHero({});
 }

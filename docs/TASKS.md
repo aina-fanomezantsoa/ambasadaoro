@@ -46,3 +46,12 @@ Resp. : « dev » partout (un seul développeur). Diff. : F facile, M moyen, D d
 
 Écart : T13 à T15, favoris, avis, masquage et statistiques essayés en local sur mobile (375 px, base PGlite) et par les tests.
 Écart : T16, non faite sur le site déployé. Restent : saisir les variables d’environnement sur Netlify, migrer et vérifier la base Neon, déployer, puis une commande de bout en bout avec un vrai téléphone (e-mail d’alerte, liens WhatsApp, photos).
+
+## Sprint 5 — retours sur le site
+| ID | Tâche | Resp. | Dépend de | Diff. | Validation | État |
+|----|-------|------|-----------|-------|------------|------|
+| T17 | Deux filtres : HDV et héros (F02) | dev | T07 | F | filtres combinés testés | ✅ |
+| T18 | Fiche à vignettes, contact WhatsApp, plus de formulaire (F04, F10) | dev | T13 | F | brouillon avec détail et prix | 🟡 |
+| T19 | Image d'accueil, ventes à la main, liste admin (F14, F18) | dev | T05 | M | image envoyée et compte marqué vendu | 🟡 |
+
+Écart : T17 à T19, lint, types et tests passent ; rendu visuel, envoi d'image et « Marquer vendu » restent à essayer à la main.

@@ -46,10 +46,9 @@ describe("catalogue", () => {
       listing("b", { townHall: 13, priceAr: 90_000 }),
       listing("c", { townHall: 12, priceAr: 50_000 }),
     ];
-    expect(titles(all, { hdv: "13", prix: "0-60000", barbarianKing: "60" })).toEqual(["a"]);
-    expect(titles(all, { nbheros: "2" })).toEqual([]);
-    expect(titles(all, { prix: "60000-" })).toEqual(["b"]);
-    expect(titles(all, { hdv: "abc", prix: "x-5-", tri: "__proto__" })).toHaveLength(3);
+    expect(titles(all, { hdv: "13", barbarianKing: "60" })).toEqual(["a"]);
+    expect(titles(all, { archerQueen: "10" })).toEqual([]);
+    expect(titles(all, { hdv: "abc", barbarianKing: "x", tri: "__proto__" })).toHaveLength(3);
   });
 
   it("BR-41: available first by default, explicit sorts win", () => {

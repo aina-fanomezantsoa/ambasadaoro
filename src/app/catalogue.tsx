@@ -3,29 +3,17 @@ import { connection } from "next/server";
 import { ListingCard } from "@/components/listing-card";
 import { db } from "@/db";
 import { publicListings } from "@/db/listings";
-import { catalogueHref, param, PRICES, searchCatalogue, SORTS, type Params } from "@/lib/catalogue";
+import { catalogueHref, param, searchCatalogue, SORTS, type Params } from "@/lib/catalogue";
 import { HEROES } from "@/lib/rules";
 import { AutoSelect } from "./auto-select";
 import { ChevronDown, Search, Shield } from "./icons";
 
-const ariary = new Intl.NumberFormat("fr-FR");
 const TOWN_HALLS = Array.from({ length: 10 }, (_, i) => String(17 - i));
-// The text repeats the filter name so a chosen value stays readable in its pill.
-const atLeast = (name: string, values: number[]) =>
-  values.map((v) => [String(v), `${name} ${ariary.format(v)}+`] as const);
-
 type Option = readonly [value: string, text: string];
-const PILLS: [name: string, label: string, options: readonly Option[]][] = [
-  ["hdv", "Niveau HDV", TOWN_HALLS.map((v) => [v, `HDV ${v}`] as const)],
-  ...Object.entries(HEROES).map(
-    ([key, label]) =>
-      [key, label, atLeast(label, [10, 25, 40, 55, 70, 85])] as [string, string, Option[]],
-  ),
-  ["nbheros", "Nombre de héros", atLeast("Héros :", [1, 2, 3, 4, 5])],
-  ["trophees", "Trophées", atLeast("Trophées", [1000, 2000, 3000, 4000, 5000])],
-  ["mdo", "Maison des ouvriers", atLeast("MDO", [3, 5, 7, 9, 10])],
-  ["prix", "Prix", PRICES],
-];
+const HALL_OPTIONS: Option[] = TOWN_HALLS.map((v) => [v, `HDV ${v}`]);
+// The text repeats the hero name so a chosen value stays readable in its pill.
+const heroOptions = (name: string): Option[] =>
+  [10, 25, 40, 55, 70, 85].map((v) => [String(v), `${name} ${v}+`]);
 
 function Pill({
   name,
@@ -39,12 +27,12 @@ function Pill({
   value: string;
 }) {
   return (
-    <span className="relative shrink-0">
+    <span className="relative block shrink-0">
       <AutoSelect
         name={name}
         aria-label={label}
         defaultValue={value}
-        className={`h-11 min-w-36 appearance-none rounded-full border bg-surface pr-9 pl-4 ${
+        className={`h-11 w-full min-w-36 appearance-none rounded-full border bg-surface pr-9 pl-4 ${
           value ? "border-accent text-foreground" : "border-transparent text-muted"
         }`}
       >
@@ -67,21 +55,35 @@ export async function Catalogue({ searchParams }: { searchParams: Promise<Params
   const listed = await publicListings(db(), now);
   const { items, available, total, page, pages } = searchCatalogue(listed, params, now);
   const hall = param(params, "hdv");
+  const chosenHeroes = Object.keys(HEROES).filter((key) => param(params, key)).length;
 
   return (
     <>
       {/* The key resets the fields when a link changes the URL. */}
       <form action="/" key={catalogueHref(params, {})} className="mt-4">
-        <div className="-m-1 flex gap-2 overflow-x-auto p-1 md:flex-wrap">
-          {PILLS.map(([name, label, options]) => (
-            <Pill
-              key={name}
-              name={name}
-              label={label}
-              options={options}
-              value={param(params, name)}
-            />
-          ))}
+        <div className="flex flex-wrap items-start gap-2">
+          <Pill name="hdv" label="Niveau HDV" options={HALL_OPTIONS} value={hall} />
+          <details className="relative">
+            <summary
+              className={`flex h-11 min-w-36 cursor-pointer list-none items-center justify-between gap-3 rounded-full border bg-surface pr-3 pl-4 ${
+                chosenHeroes ? "border-accent text-foreground" : "border-transparent text-muted"
+              }`}
+            >
+              Héros{chosenHeroes > 0 && ` (${chosenHeroes})`}
+              <ChevronDown className="size-4 text-muted" />
+            </summary>
+            <div className="absolute right-0 z-20 mt-2 w-64 space-y-2 rounded-3xl border border-white/15 bg-field p-3">
+              {Object.entries(HEROES).map(([key, label]) => (
+                <Pill
+                  key={key}
+                  name={key}
+                  label={label}
+                  options={heroOptions(label)}
+                  value={param(params, key)}
+                />
+              ))}
+            </div>
+          </details>
         </div>
 
         <div className="mt-4 flex flex-col gap-3 lg:flex-row lg:items-center">

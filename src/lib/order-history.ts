@@ -20,12 +20,3 @@ export function parseHistory(text: string): PastOrder[] {
     return [];
   }
 }
-
-export function remember(order: PastOrder) {
-  const others = parseHistory(historyText()).filter((o) => o.code !== order.code);
-  try {
-    localStorage.setItem(KEY, JSON.stringify([order, ...others].slice(0, 20)));
-  } catch {
-    // storage blocked: the buyer still sees the code on screen
-  }
-}

@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { parseFavorites } from "../src/lib/favorites";
-import { whatsappHref } from "../src/lib/whatsapp";
+import { accountMessage, whatsappHref } from "../src/lib/whatsapp";
 
 afterEach(() => vi.unstubAllEnvs());
 
@@ -10,6 +10,37 @@ describe("favorites and WhatsApp", () => {
     expect(parseFavorites(JSON.stringify([id, "x,y", 3, null]))).toEqual([id]);
     expect(parseFavorites("{oops")).toEqual([]);
     expect(parseFavorites('{"a":1}')).toEqual([]);
+  });
+
+  it("F10: the draft carries the price and the account details", () => {
+    const text = accountMessage(
+      {
+        title: "Village",
+        priceAr: 220_000,
+        townHall: 13,
+        builderHall: null,
+        trophies: 0,
+        league: "",
+        gems: null,
+        xpLevel: null,
+        heroes: { barbarianKing: 70 },
+        skins: null,
+        decorations: "Arbre",
+      },
+      "https://x.mg/annonces/1",
+    ).replace(/\s(?=\d{3})/g, " ");
+    for (const line of [
+      "Village",
+      "Prix : 220 000 Ar",
+      "Niveau HDV : 13",
+      "Trophées : 0",
+      "Roi des barbares : niveau 70",
+      "Reine des archers : non débloqué",
+      "Décors : Arbre",
+    ])
+      expect(text).toContain(line);
+    expect(text).not.toMatch(/Ligue|Gemmes|Skins|Maison/);
+    expect(text.endsWith("https://x.mg/annonces/1")).toBe(true);
   });
 
   it("F10: prefills the message, and shows nothing without a number", () => {

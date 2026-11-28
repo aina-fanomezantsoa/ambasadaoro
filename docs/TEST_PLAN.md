@@ -20,10 +20,10 @@
 
 ## Manuels
 - Permissions : pages `/admin` sans connexion et avec un mauvais mot de passe.
-- Téléphone réel sur réseau mobile : catalogue, filtres, commande, paiement.
+- Téléphone réel sur réseau mobile : catalogue, filtres, fiche, vignettes, brouillon WhatsApp, image d'accueil.
 - Photos : trop lourde, mauvais format, 9e photo.
 - Corrections : annuler une commande, refuser un ID, retirer une annonce.
 - E-mail d'alerte reçu et liens WhatsApp corrects.
 
 ## Critère de livraison
-Tous les tests passent **sur le site déployé**, pas seulement en local, et une commande de bout en bout a été faite avec un vrai téléphone.
+Tous les tests passent **sur le site déployé**, pas seulement en local, et un contact WhatsApp a été fait avec un vrai téléphone depuis une fiche.

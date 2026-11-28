@@ -8,7 +8,7 @@
 - **BR-03** Le prix est un entier en ariary, de 1 000 à 100 000 000 (à confirmer).
 - **BR-04** 8 photos au maximum, 5 Mo chacune, JPEG, PNG ou WebP.
 - **BR-05** Les héros viennent d'une liste fixe : Roi des barbares, Reine des archers, Grand gardien, Championne royale, Prince gargouille. Niveau vide = non débloqué.
-- **BR-06** Une annonce vendue reste visible 7 jours après la validation du paiement, puis disparaît du public.
+- **BR-06** Une annonce vendue reste visible 7 jours après la vente, puis disparaît du public.
 - **BR-07** Une annonce ayant au moins une commande n'est jamais supprimée, seulement retirée.
 
 ## Commandes et paiement
@@ -24,6 +24,7 @@
 - **BR-19** La validation du paiement passe la commande à `payée` et l'annonce à `vendue`.
 - **BR-20** Seule une commande `payée` peut être marquée `livrée`.
 - **BR-21** L'admin peut annuler une commande non livrée ; l'annonce redevient publiée.
+- **BR-22** L'admin peut marquer vendue une annonce publiée et sans commande active (vente conclue sur WhatsApp) ; c'est définitif, et BR-06 compte à partir de ce moment.
 
 ## Suivi, garantie, avis
 - **BR-30** Le suivi exige le code de commande et le téléphone ; 5 essais par 15 minutes (à confirmer).
