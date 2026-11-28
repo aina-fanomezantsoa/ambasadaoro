@@ -11,7 +11,8 @@ import {
 } from "react";
 import { DISPUTE_STATUS, OPERATORS, ORDER_STATUS } from "@/lib/limits";
 import { historyText, parseHistory, type PastOrder } from "@/lib/order-history";
-import { submitPayment, trackOrder, type OrderView } from "./actions";
+import { createReview, submitPayment, trackOrder, type OrderView } from "./actions";
+import { ReviewForm } from "./review-form";
 
 const field = "mt-1 block h-11 w-full rounded-2xl border border-white/15 bg-field px-4";
 const button = "h-11 w-full rounded-3xl bg-accent font-medium text-on-accent disabled:opacity-60";
@@ -26,12 +27,12 @@ type Submit = (event: FormEvent<HTMLFormElement>) => void;
 type State = { order: OrderView | null; phone: string; error: string | null };
 
 async function run(previous: State, form: FormData): Promise<State> {
-  const paying = form.has("txId");
-  const result = await (paying ? submitPayment : trackOrder)(form);
+  const send = form.has("txId") ? submitPayment : form.has("rating") ? createReview : trackOrder;
+  const result = await send(form);
   const phone = String(form.get("phone"));
   if (result.ok) return { order: result.data, phone, error: null };
-  // A refused ID keeps the order on screen, to try again.
-  return { order: paying ? previous.order : null, phone, error: result.error };
+  // A refused ID or review keeps the order on screen, to try again.
+  return { order: send === trackOrder ? null : previous.order, phone, error: result.error };
 }
 
 function credentials({ code, phone }: PastOrder) {
@@ -223,6 +224,12 @@ function Order({
           </Link>
         </p>
       )}
+      {order.status === "delivered" &&
+        (order.reviewed ? (
+          <p className="mt-3 font-medium">Merci pour votre avis.</p>
+        ) : (
+          <ReviewForm code={order.code} phone={phone} submit={submit} pending={pending} />
+        ))}
     </section>
   );
 }

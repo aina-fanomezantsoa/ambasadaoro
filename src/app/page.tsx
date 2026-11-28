@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import type { Params } from "@/lib/catalogue";
 import { Catalogue } from "./catalogue";
 import { ChevronRight } from "./icons";
+import { Reviews } from "./reviews";
 
 const STEPS = [
   "Choisissez un compte disponible et commandez avec votre nom et votre numéro : il vous est réservé 1 heure.",
@@ -63,6 +64,10 @@ export default function Home({ searchParams }: { searchParams: Promise<Params> }
             ))}
           </ol>
         </section>
+
+        <Suspense>
+          <Reviews />
+        </Suspense>
 
         <section id="faq" className="mt-10 scroll-mt-40">
           <h2 className="text-xl font-bold">Questions fréquentes</h2>

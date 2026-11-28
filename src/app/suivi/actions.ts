@@ -5,6 +5,7 @@ import { z } from "zod";
 import { db } from "@/db";
 import * as orders from "@/db/orders";
 import { allowAttempt, forgiveAttempt } from "@/db/rate-limit";
+import * as reviews from "@/db/reviews";
 import { action, UserError } from "@/lib/action";
 import { alertAdmin } from "@/lib/alert";
 import { clientIp } from "@/lib/client-ip";
@@ -86,6 +87,26 @@ const pay = action(
     return view(input);
   },
 );
+
+const review = action(
+  credentials.extend({
+    rating: z.coerce.number().int().min(1).max(5),
+    // Browsers send CRLF but count one character per line break (BR-34).
+    comment: z
+      .string()
+      .transform((text) => text.replace(/\r\n/g, "\n").trim())
+      .pipe(z.string().max(500)),
+  }),
+  async ({ rating, comment, ...input }) => {
+    const order = await ownOrder(input);
+    await reviews.createReview(db(), order.id, rating, comment);
+    return view(input);
+  },
+);
+
+export async function createReview(form: FormData) {
+  return review(Object.fromEntries(form));
+}
 
 export async function submitPayment(form: FormData) {
   return pay(Object.fromEntries(form));
