@@ -86,3 +86,12 @@ Statut : ✅ validé · 🟡 provisoire · ❓ ouvert
 | 41 | Essais de suivi | Seuls les essais ratés comptent dans la limite de BR-30 | 🟡 |
 | 42 | Anti-abus commande | 10 commandes par heure et par adresse IP, en plus de BR-12 | 🟡 |
 | 43 | Expéditeur de l'alerte | `onboarding@resend.dev` : `ADMIN_EMAIL` doit être l'adresse du compte Resend | 🟡 |
+
+## Série 9 — confiance et finition (2026-11-28)
+
+| # | Sujet | Décision | Statut |
+|---|-------|----------|--------|
+| 44 | Favoris | Identifiants gardés sur l'appareil (50 au plus) et passés à `/favoris` dans l'adresse ; un compte retiré ou vendu depuis plus de 7 jours n'y apparaît plus | 🟡 |
+| 45 | Avis publics | Moyenne et 6 derniers avis sur l'accueil, moyenne sur chaque fiche ; ni nom ni téléphone | 🟡 |
+| 46 | Modération | Un avis masqué peut être réaffiché ; il ne compte pas dans la moyenne | 🟡 |
+| 47 | Statistiques | Mois de livraison à l'heure d'Antananarivo ; « ventes » = commandes livrées, remboursées comprises (le CA les exclut) | 🟡 |

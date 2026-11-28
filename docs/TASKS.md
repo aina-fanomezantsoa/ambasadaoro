@@ -39,7 +39,10 @@ Resp. : « dev » partout (un seul développeur). Diff. : F facile, M moyen, D d
 ## Sprint 4 — confiance et finition (jours 16 à 20)
 | ID | Tâche | Resp. | Dépend de | Diff. | Validation | État |
 |----|-------|------|-----------|-------|------------|------|
-| T13 | Favoris et bouton WhatsApp (F09, F10) | dev | T07 | F | favoris conservés, message prérempli | ⬜ |
-| T14 | Avis (F11) | dev | T11, T12 | M | un seul avis par commande livrée | ⬜ |
-| T15 | Statistiques (F16) | dev | T11 | M | chiffres égaux aux données de test | ⬜ |
-| T16 | Recette sur le site déployé (tous les F) | dev | T01–T15 | M | critère de livraison du TEST_PLAN | ⬜ |
+| T13 | Favoris et bouton WhatsApp (F09, F10) | dev | T07 | F | message prérempli | ✅ |
+| T14 | Avis (F11) | dev | T11, T12 | M | un seul avis par commande livrée | ✅ |
+| T15 | Statistiques (F16) | dev | T11 | M | chiffres égaux aux données de test | ✅ |
+| T16 | Recette sur le site déployé (tous les F) | dev | T01–T15 | M | critère de livraison du TEST_PLAN | 🟡 |
+
+Écart : T13 à T15, favoris, avis, masquage et statistiques essayés en local sur mobile (375 px, base PGlite) et par les tests.
+Écart : T16, non faite sur le site déployé. Restent : saisir les variables d’environnement sur Netlify, migrer et vérifier la base Neon, déployer, puis une commande de bout en bout avec un vrai téléphone (e-mail d’alerte, liens WhatsApp, photos).

@@ -14,6 +14,6 @@ Entrées validées avec Zod. Réponse : `{ ok: true, data }` ou `{ ok: false, er
 | `acceptPayment`, `rejectPayment` | admin | paiement | déjà traité |
 | `markDelivered`, `cancelOrder` | admin | commande | statut incompatible |
 | `openDispute`, `closeDispute` | admin | commande, motif, issue | délai de 7 jours dépassé |
-| `hideReview` | admin | avis | — |
+| `hideReview`, `showReview` | admin | avis | avis introuvable |
 
 Toute action admin vérifie la session côté serveur. Le catalogue, la fiche et les statistiques sont lus par des Server Components.

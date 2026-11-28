@@ -16,7 +16,7 @@ Arial, 14 px. Espacements par multiples de 4 px. Rayons : cartes 24 px, champs e
 
 ## Page catalogue (accueil et liste)
 De haut en bas :
-1. En-tête fixe : « Ambasadaoro », « Comment acheter », « Questions fréquentes », WhatsApp ; dessous, onglet « Comptes ». « Règles et garantie » et, dans la barre d’onglets (visible sur mobile), « Ma commande ». Favoris quand la page existera.
+1. En-tête fixe : « Ambasadaoro », « Comment acheter », « Questions fréquentes », WhatsApp ; dessous, onglet « Comptes ». « Règles et garantie » et, dans la barre d’onglets (visible sur mobile), « Ma commande ». « Favoris » dans la barre d’onglets.
 2. Fil d'Ariane et titre « Acheter un compte Clash of Clans ».
 3. Filtres en pilules déroulantes (une ligne défilante sur mobile), appliqués dès le choix : HDV, héros, nombre de héros, trophées, maison des ouvriers, tranches de prix.
 4. Champ de recherche et raccourcis HDV (HDV 17, 16, 15…) défilant horizontalement.
