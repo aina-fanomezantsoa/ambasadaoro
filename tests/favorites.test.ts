@@ -15,6 +15,10 @@ describe("favorites and WhatsApp", () => {
   it("F10: prefills the message, and shows nothing without a number", () => {
     vi.stubEnv("NEXT_PUBLIC_WHATSAPP_NUMBER", "+261 34 00 000 00");
     expect(whatsappHref("A & B")).toBe("https://wa.me/261340000000?text=A%20%26%20B");
+    for (const other of ["034 00 000 00", "00261340000000"]) {
+      vi.stubEnv("NEXT_PUBLIC_WHATSAPP_NUMBER", other);
+      expect(whatsappHref()).toBe("https://wa.me/261340000000");
+    }
     vi.stubEnv("NEXT_PUBLIC_WHATSAPP_NUMBER", "");
     expect(whatsappHref("x")).toBeNull();
   });
