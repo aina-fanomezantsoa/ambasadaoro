@@ -129,6 +129,11 @@ describe("orders", () => {
     expect(rows[0].order.status).toBe("to_verify");
   });
 
+  it("F16: statistics read delivered orders with their dispute outcome", async () => {
+    const rows = await o.deliveredOrders(db);
+    expect(rows).toEqual([{ deliveredAt: now, priceAr: 5000, dispute: "refunded" }]);
+  });
+
   it("BR-21: cancelling a paid order puts the listing back on sale", async () => {
     const id = await listing();
     const first = await order(id);

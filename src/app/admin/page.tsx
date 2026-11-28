@@ -39,6 +39,12 @@ async function Dashboard() {
         >
           Avis
         </Link>
+        <Link
+          href="/admin/statistiques"
+          className="flex h-11 items-center rounded-3xl bg-surface px-5 font-medium"
+        >
+          Statistiques
+        </Link>
         <form action={logout}>
           <button className="h-11 rounded-3xl bg-surface px-5 font-medium">Se déconnecter</button>
         </form>
