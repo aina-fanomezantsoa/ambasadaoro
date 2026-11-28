@@ -245,6 +245,16 @@ export async function adminOrders(database: Database, now: Date) {
   return rows.map((r) => ({ ...r, payments: paid.filter((p) => p.orderId === r.order.id) }));
 }
 
+/** F16: what the statistics are computed from. */
+export async function deliveredOrders(database: Database) {
+  const rows = await database
+    .select({ deliveredAt: orders.deliveredAt, priceAr: orders.priceAr, dispute: disputes.status })
+    .from(orders)
+    .leftJoin(disputes, eq(disputes.orderId, orders.id))
+    .where(eq(orders.status, "delivered"));
+  return rows.map((row) => ({ ...row, deliveredAt: row.deliveredAt! })); // set by BR-20
+}
+
 export async function countToVerify(database: Database) {
   const [row] = await database
     .select({ n: count() })

@@ -86,3 +86,29 @@ export const isTxId = (txId: string) => /^[A-Z0-9._-]{5,40}$/.test(txId);
 /** BR-32: a dispute opens within 7 days of delivery. */
 export const canOpenDispute = (deliveredAt: Date, now: Date) =>
   now.getTime() - deliveredAt.getTime() <= 7 * 86_400_000;
+
+// Madagascar is UTC+3 all year: a month starts at its midnight, not London's.
+const monthOf = (date: Date) => new Date(date.getTime() + 3 * 3_600_000).toISOString().slice(0, 7);
+
+/** F16, BR-43, BR-44: figures of the delivered orders, newest delivery month first. */
+export function monthlyStats(
+  delivered: { deliveredAt: Date; priceAr: number; dispute: string | null }[],
+) {
+  const months = new Map<string, { sales: number; revenueAr: number; disputes: number }>();
+  for (const order of delivered) {
+    const key = monthOf(order.deliveredAt);
+    const month = months.get(key) ?? { sales: 0, revenueAr: 0, disputes: 0 };
+    month.sales += 1;
+    if (order.dispute !== "refunded") month.revenueAr += order.priceAr;
+    if (order.dispute && order.dispute !== "rejected") month.disputes += 1;
+    months.set(key, month);
+  }
+  return [...months]
+    .sort(([a], [b]) => b.localeCompare(a))
+    .map(([month, { sales, revenueAr, disputes }]) => ({
+      month,
+      sales,
+      revenueAr,
+      disputeRate: disputes / sales,
+    }));
+}
