@@ -52,3 +52,9 @@ export const Chat = (p: SVGProps<SVGSVGElement>) => (
     <path d="M21 12a8 8 0 0 1-11.8 7L4 20l1.2-4.6A8 8 0 1 1 21 12z" />
   </Svg>
 );
+
+export const Heart = (p: SVGProps<SVGSVGElement>) => (
+  <Svg {...p}>
+    <path d="M12 20s-8-4.9-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 9c0 6.1-8 11-8 11z" />
+  </Svg>
+);

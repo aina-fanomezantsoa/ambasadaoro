@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { headers } from "next/headers";
 import { connection } from "next/server";
 import { Suspense } from "react";
 import { z } from "zod";
+import { FavoriteButton } from "@/components/favorite-button";
 import { Photo } from "@/components/photo";
 import { Status } from "@/components/status";
 import { db } from "@/db";
 import { publicListing } from "@/db/listings";
 import { HEROES } from "@/lib/limits";
-import { Shield } from "../../icons";
+import { whatsappHref } from "@/lib/whatsapp";
+import { Chat, Shield } from "../../icons";
 import { CountView } from "./count-view";
 import { OrderForm } from "./order-form";
 
@@ -24,6 +27,12 @@ async function Listing({ params }: { params: Promise<{ id: string }> }) {
   if (!z.uuid().safeParse(id).success) notFound();
   const listing = await publicListing(db(), id, new Date());
   if (!listing) notFound();
+
+  const host = (await headers()).get("host");
+  const whatsapp = whatsappHref(
+    `Bonjour, je suis intéressé par le compte « ${listing.title} » (HDV ${listing.townHall}, ` +
+      `${number.format(listing.priceAr)} Ar) : https://${host}/annonces/${id}`,
+  );
 
   const details = [
     ["Niveau HDV", String(listing.townHall)],
@@ -46,7 +55,10 @@ async function Listing({ params }: { params: Promise<{ id: string }> }) {
 
   return (
     <>
-      <h1 className="mt-3 text-xl font-bold lg:text-3xl">{listing.title}</h1>
+      <div className="mt-3 flex items-start justify-between gap-3">
+        <h1 className="min-w-0 text-xl font-bold break-words lg:text-3xl">{listing.title}</h1>
+        <FavoriteButton id={id} title={listing.title} />
+      </div>
 
       {listing.photos.length === 0 ? (
         <p className="mt-4 rounded-3xl bg-surface p-10 text-center text-muted">Photo à venir</p>
@@ -81,6 +93,15 @@ async function Listing({ params }: { params: Promise<{ id: string }> }) {
           <Shield className="size-5 text-accent" />
           Garantie 7 jours · règles et risques
         </Link>
+        {whatsapp && (
+          <a
+            href={whatsapp}
+            className="flex h-11 w-full items-center justify-center gap-2 rounded-3xl bg-chip font-medium"
+          >
+            <Chat className="size-4" />
+            Demander sur WhatsApp
+          </a>
+        )}
       </div>
 
       {listing.status === "published" &&
