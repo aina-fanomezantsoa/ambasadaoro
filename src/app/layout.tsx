@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { whatsappHref } from "@/lib/whatsapp";
 import { Chat, Shield } from "./icons";
 import "./globals.css";
 
@@ -8,8 +9,7 @@ export const metadata: Metadata = {
   description: "Comptes Clash of Clans à vendre à Madagascar, paiement Mobile Money.",
 };
 
-const whatsapp = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(/\D/g, "");
-const whatsappHref = whatsapp && `https://wa.me/${whatsapp}`;
+const whatsapp = whatsappHref();
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
@@ -32,9 +32,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               <Link href="/#faq">Questions fréquentes</Link>
               <Link href="/regles">Règles et garantie</Link>
             </nav>
-            {whatsappHref && (
+            {whatsapp && (
               <a
-                href={whatsappHref}
+                href={whatsapp}
                 className="ml-auto flex min-h-11 items-center gap-2 rounded-3xl bg-accent px-5 font-medium text-on-accent"
               >
                 <Chat className="size-4" />
@@ -44,7 +44,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           </div>
           <div className="border-t border-white/5">
             <div className="mx-auto flex h-14 max-w-[1200px] items-center gap-6 px-4">
-              <span className="flex items-center gap-2 font-semibold">
+              <span className="flex items-center gap-2 font-semibold max-sm:sr-only">
                 <Shield className="size-6 text-muted" />
                 Clash of Clans
               </span>
@@ -54,10 +54,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               >
                 Comptes
               </Link>
-              <Link
-                href="/suivi"
-                className="ml-auto flex min-h-11 items-center font-medium md:ml-0"
-              >
+              <Link href="/favoris" className="ml-auto flex min-h-11 items-center md:ml-0">
+                Favoris
+              </Link>
+              <Link href="/suivi" className="flex min-h-11 items-center font-medium">
                 Ma commande
               </Link>
             </div>
@@ -73,9 +73,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           </Link>
         </footer>
 
-        {whatsappHref && (
+        {whatsapp && (
           <a
-            href={whatsappHref}
+            href={whatsapp}
             className="fixed right-3 bottom-6 z-20 flex size-14 flex-col items-center justify-center rounded-2xl bg-accent text-xs font-semibold text-on-accent shadow-lg"
           >
             <Chat className="size-5" />
